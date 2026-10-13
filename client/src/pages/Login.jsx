@@ -56,7 +56,7 @@ export default function Login() {
             Gestioná tu club con <span className="text-gradient-brand">energía Hayya.</span>
           </h2>
           <p className="mt-5 text-base text-muted">
-            Socios, control de acceso por DNI y métricas del día en un solo panel, rápido y seguro.
+            Profe prueba hardcore
           </p>
           <div className="mt-10 grid grid-cols-3 gap-4">
             {[
