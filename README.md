@@ -4,7 +4,7 @@ Plataforma de gestión de gimnasios y control de acceso por DNI en tiempo real p
 
 ---
 
-## 🛠️ Stack Tecnológico
+## 🛠️ Stack Tecnológicoo
 
 - **Backend (`/server`):**
   - Node.js + Express.js (`index.js` en JavaScript plano).
