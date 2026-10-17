@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
-import { Mail, Lock, Eye, EyeOff, Loader2, ArrowRight, ShieldCheck, ScanLine, Users } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, Loader2, ArrowRight, ShieldCheck, ScanLine, Users, AlertCircle } from 'lucide-react';
 import { useAuth } from '../context/AuthContext.jsx';
 import { getErrorMessage } from '../api/axios';
 import { Emblem, Wordmark } from '../components/Logo.jsx';
@@ -64,8 +64,10 @@ export default function Login() {
               { icon: ScanLine, t: 'Tótem DNI', d: 'Acceso al instante' },
               { icon: ShieldCheck, t: 'Seguro', d: 'Sesión cifrada' },
             ].map(({ icon: Icon, t, d }) => (
-              <div key={t} className="rounded-2xl border border-line bg-ink-800/70 p-4 backdrop-blur">
-                <Icon className="h-5 w-5 text-brand" />
+              <div key={t} className="rounded-xl border border-white/10 bg-white/[0.02] p-4">
+                <span className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/10 bg-white/[0.04] text-gray-300">
+                  <Icon className="h-4 w-4" />
+                </span>
                 <p className="mt-3 text-sm font-semibold">{t}</p>
                 <p className="text-xs text-muted">{d}</p>
               </div>
@@ -78,7 +80,7 @@ export default function Login() {
 
       {/* Formulario */}
       <section className="relative flex w-full items-center justify-center px-6 py-12 lg:w-[520px]">
-        <div className="absolute right-0 top-0 h-80 w-80 rounded-full bg-brand/10 blur-[120px] lg:hidden" />
+        <div className="absolute right-0 top-0 h-80 w-80 rounded-full bg-brand/5 blur-[160px] lg:hidden" />
         <div className="relative w-full max-w-sm animate-slide-up">
           <Wordmark className="mb-10" />
 
@@ -87,8 +89,9 @@ export default function Login() {
 
           <form onSubmit={handleSubmit} noValidate className="mt-8 space-y-5">
             {error && (
-              <div role="alert" className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300 animate-shake">
-                {error}
+              <div role="alert" className="flex items-center gap-2.5 rounded-xl border border-red-500/25 bg-red-500/5 px-4 py-3 text-xs text-red-300 animate-shake">
+                <AlertCircle className="h-4 w-4 shrink-0 text-red-400" />
+                <span>{error}</span>
               </div>
             )}
 

@@ -37,11 +37,24 @@ export function Wordmark({ className = '', emblemClass = 'text-brand', size = 'm
   );
 }
 
+/** Logo horizontal: emblema a la izquierda + "Hayya" / "FITNESS CLUB" (sidebar) */
+export function HorizontalLogo({ className = '' }) {
+  return (
+    <div className={`flex items-center gap-3 text-white ${className}`}>
+      <Emblem className="h-9 w-9 shrink-0" title="Hayya Fitness Club" />
+      <div className="flex flex-col items-center leading-none">
+        <span className="text-[26px] font-extrabold tracking-tight">Hayya</span>
+        <span className="mt-1 text-[7px] font-semibold tracking-[0.4em] text-gray-300">FITNESS CLUB</span>
+      </div>
+    </div>
+  );
+}
+
 /** Insignia circular "HAYYA CLUB" del sidebar (según Figma) */
 export function ClubBadge({ className = '' }) {
   return (
     <div
-      className={`relative flex h-20 w-20 flex-col items-center justify-center rounded-full border-2 border-brand bg-ink-900 shadow-[0_0_30px_-4px_rgba(255,85,0,.55)] ${className}`}
+      className={`relative flex h-20 w-20 flex-col items-center justify-center rounded-full border-2 border-brand bg-ink-900 shadow-md ${className}`}
     >
       <span className="absolute inset-1 rounded-full border border-brand/20" />
       <Emblem className="mb-0.5 h-4 w-4 text-brand" />

@@ -6,23 +6,23 @@ export default {
     extend: {
       colors: {
         ink: {
-          950: '#0B0D12',
-          900: '#0F1117', // fondo general
-          850: '#12141B', // sidebar
-          800: '#161922', // tarjetas
-          750: '#1B1F2A',
-          700: '#20242F',
+          950: '#0c0c0c',
+          900: '#141414', // fondo general neutro
+          850: '#222222', // fondo del sidebar
+          800: '#1a1a1a', // tarjetas y contenedores
+          750: '#242424', // inputs y elementos secundarios
+          700: '#2f2f2f', // hovers
         },
         line: {
-          DEFAULT: '#262A36',
-          strong: '#333847',
+          DEFAULT: '#2a2a2a',
+          strong: '#363636',
         },
         brand: {
-          DEFAULT: '#FF5500',
-          300: '#FF8A4C',
-          400: '#FF6600',
-          500: '#FF5500',
-          600: '#E04B00',
+          DEFAULT: '#E85D26', // naranja cálido y suave, no chillón
+          300: '#F4956B',
+          400: '#EE743F',
+          500: '#E85D26',
+          600: '#CC4C1A',
         },
         muted: '#9CA3AF',
       },
@@ -31,9 +31,9 @@ export default {
         mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
       },
       boxShadow: {
-        glow: '0 0 0 1px rgba(255,85,0,.45), 0 10px 30px -8px rgba(255,85,0,.55)',
-        'glow-sm': '0 6px 20px -6px rgba(255,85,0,.6)',
-        card: '0 1px 0 0 rgba(255,255,255,.03) inset, 0 20px 40px -24px rgba(0,0,0,.6)',
+        glow: 'none',
+        'glow-sm': 'none',
+        card: '0 1px 2px 0 rgba(0,0,0,0.3)',
       },
       keyframes: {
         'fade-in': { from: { opacity: 0 }, to: { opacity: 1 } },
@@ -46,9 +46,8 @@ export default {
           to: { opacity: 1, transform: 'translateY(0)' },
         },
         'pulse-ring': {
-          '0%': { boxShadow: '0 0 0 0 rgba(34,197,94,.55)' },
-          '70%': { boxShadow: '0 0 0 8px rgba(34,197,94,0)' },
-          '100%': { boxShadow: '0 0 0 0 rgba(34,197,94,0)' },
+          '0%, 100%': { opacity: '1' },
+          '50%': { opacity: '0.4' },
         },
         shake: {
           '0%,100%': { transform: 'translateX(0)' },

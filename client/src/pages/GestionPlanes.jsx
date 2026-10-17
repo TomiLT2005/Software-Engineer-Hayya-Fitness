@@ -38,9 +38,8 @@ function PlanCard({ plan, onEdit, onToggleStatus, isToggling }) {
 
   return (
     <div
-      className={`card group flex flex-col justify-between overflow-hidden p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-line-strong ${
-        !isActive ? 'opacity-80 border-dashed' : ''
-      }`}
+      className={`card group flex flex-col justify-between overflow-hidden p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-line-strong ${!isActive ? 'opacity-80 border-dashed' : ''
+        }`}
     >
       <div>
         {/* Banner / Imagen superior idéntico a Figma */}
@@ -52,9 +51,8 @@ function PlanCard({ plan, onEdit, onToggleStatus, isToggling }) {
                 alt={plan.nombre}
                 referrerPolicy="no-referrer"
                 onError={() => setImgError(true)}
-                className={`h-full w-full object-cover transition-transform duration-500 group-hover:scale-105 ${
-                  !isActive ? 'grayscale contrast-125' : ''
-                }`}
+                className={`h-full w-full object-cover transition-transform duration-500 group-hover:scale-105 ${!isActive ? 'grayscale contrast-125' : ''
+                  }`}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-ink-900/80 via-transparent to-transparent" />
             </>
@@ -68,7 +66,7 @@ function PlanCard({ plan, onEdit, onToggleStatus, isToggling }) {
 
           {/* Badge de estado cuando está inactivo */}
           {!isActive && (
-            <div className="absolute right-3 top-3 rounded-full border border-red-500/30 bg-red-500/20 px-2.5 py-0.5 text-[11px] font-semibold text-red-300 backdrop-blur-sm">
+            <div className="absolute right-3 top-3 rounded-full border border-red-500/25 bg-red-500/5 px-2.5 py-0.5 text-[11px] font-semibold text-red-300 backdrop-blur-sm">
               Inactivo
             </div>
           )}
@@ -121,11 +119,10 @@ function PlanCard({ plan, onEdit, onToggleStatus, isToggling }) {
           type="button"
           onClick={() => onToggleStatus(plan)}
           disabled={isToggling}
-          className={`flex items-center justify-center gap-1.5 rounded-xl border px-3 py-2.5 text-sm font-medium transition-all duration-150 ${
-            isActive
-              ? 'border-line bg-ink-750 text-gray-300 hover:border-line-strong hover:bg-ink-700 hover:text-white'
-              : 'border-emerald-500/30 bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20'
-          }`}
+          className={`flex items-center justify-center gap-1.5 rounded-xl border px-3 py-2.5 text-sm font-medium transition-all duration-150 ${isActive
+            ? 'border-line bg-ink-750 text-gray-300 hover:border-line-strong hover:bg-ink-700 hover:text-white'
+            : 'border-emerald-500/30 bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20'
+            }`}
         >
           {isToggling ? (
             <Loader2 className="h-4 w-4 animate-spin text-muted" />
@@ -298,15 +295,15 @@ export default function GestionPlanes() {
           className="btn-primary inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold tracking-wide"
         >
           <Plus className="h-4 w-4 stroke-[2.5]" />
-          <span>+ Nuevo Plan</span>
+          <span>Nuevo Plan</span>
         </button>
       </div>
 
       {/* Estado de error */}
       {error && (
-        <div className="mb-6 flex items-center justify-between rounded-xl border border-red-500/30 bg-red-500/10 p-4 text-sm text-red-400">
-          <div className="flex items-center gap-2">
-            <AlertCircle className="h-5 w-5 shrink-0" />
+        <div className="mb-6 flex items-center justify-between rounded-xl border border-red-500/25 bg-red-500/5 p-4 text-xs text-red-300">
+          <div className="flex items-center gap-2.5">
+            <AlertCircle className="h-4 w-4 shrink-0 text-red-400" />
             <span>{error}</span>
           </div>
           <button onClick={fetchPlanes} className="btn btn-ghost py-1 text-xs text-red-300">
@@ -327,8 +324,8 @@ export default function GestionPlanes() {
         </div>
       ) : planes.length === 0 ? (
         <div className="card flex flex-col items-center justify-center p-12 text-center">
-          <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-line bg-ink-750">
-            <Layers className="h-8 w-8 text-gray-500" />
+          <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-white/10 bg-white/[0.03] text-gray-400">
+            <Layers className="h-6 w-6" />
           </div>
           <h3 className="mt-4 text-lg font-bold text-white">No se encontraron planes</h3>
           <p className="mt-1 max-w-sm text-sm text-muted">

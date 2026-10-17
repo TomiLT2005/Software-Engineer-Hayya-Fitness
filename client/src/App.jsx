@@ -5,6 +5,7 @@ import Login from './pages/Login.jsx';
 import DashboardInicio from './pages/DashboardInicio.jsx';
 import GestionSocios from './pages/GestionSocios.jsx';
 import GestionPlanes from './pages/GestionPlanes.jsx';
+import GestionPagos from './pages/GestionPagos.jsx';
 import TotemAcceso from './pages/TotemAcceso.jsx';
 
 export default function App() {
@@ -19,6 +20,7 @@ export default function App() {
           <Route index element={<Navigate to="inicio" replace />} />
           <Route path="inicio" element={<DashboardInicio />} />
           <Route path="socios" element={<GestionSocios />} />
+          <Route path="pagos" element={<GestionPagos />} />
           <Route path="planes" element={<GestionPlanes />} />
         </Route>
       </Route>

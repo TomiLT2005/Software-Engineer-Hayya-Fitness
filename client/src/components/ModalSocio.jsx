@@ -181,8 +181,9 @@ export default function ModalSocio({ open, socio, onClose, onSaved }) {
     >
       <form id="form-socio" onSubmit={handleSubmit} noValidate className="space-y-5">
         {serverError && (
-          <div className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300 animate-shake">
-            {serverError}
+          <div className="flex items-center gap-2.5 rounded-xl border border-red-500/25 bg-red-500/5 px-4 py-3 text-xs text-red-300 animate-shake">
+            <AlertCircle className="h-4 w-4 shrink-0 text-red-400" />
+            <span>{serverError}</span>
           </div>
         )}
 
@@ -260,8 +261,9 @@ export default function ModalSocio({ open, socio, onClose, onSaved }) {
           </div>
 
           {planesList.length === 0 && !loadingPlanes ? (
-            <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-3 text-xs text-amber-300">
-              No hay planes activos configurados en el sistema. Creá o activá uno en la sección Planes.
+            <div className="flex items-center gap-2.5 rounded-xl border border-amber-500/25 bg-amber-500/5 p-3 text-xs text-amber-300">
+              <AlertCircle className="h-4 w-4 shrink-0 text-amber-400" />
+              <span>No hay planes activos configurados en el sistema. Creá o activá uno en la sección Planes.</span>
             </div>
           ) : (
             <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3" role="radiogroup">
@@ -279,8 +281,8 @@ export default function ModalSocio({ open, socio, onClose, onSaved }) {
                     onClick={() => setForm((f) => ({ ...f, plan: planName }))}
                     className={`group relative flex flex-col items-center justify-center rounded-xl border p-3 text-center transition-all ${
                       active
-                        ? 'border-brand bg-brand/10 text-white shadow-[0_0_20px_-8px_rgba(255,85,0,.8)]'
-                        : 'border-line bg-ink-750 text-gray-400 hover:border-line-strong hover:text-white'
+                        ? 'border-brand/60 bg-brand/5 text-white shadow-sm'
+                        : 'border-white/10 bg-white/[0.02] text-gray-400 hover:border-white/20 hover:text-white'
                     }`}
                   >
                     <span className="text-sm font-semibold truncate w-full">{planName}</span>
@@ -290,7 +292,7 @@ export default function ModalSocio({ open, socio, onClose, onSaved }) {
                       </span>
                     )}
                     {isPlanInactive && (
-                      <span className="mt-1 rounded bg-red-500/20 px-1.5 py-0.5 text-[9px] font-bold text-red-300">
+                      <span className="mt-1 rounded-full border border-red-500/25 bg-red-500/5 px-2 py-0.5 text-[9px] font-bold text-red-300">
                         Inactivo
                       </span>
                     )}

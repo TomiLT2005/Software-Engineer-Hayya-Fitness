@@ -21,6 +21,7 @@ const authMiddleware = require('./middleware/authMiddleware');
 const authRoutes = require('./routes/auth');
 const sociosRoutes = require('./routes/socios');
 const planesRoutes = require('./routes/planes');
+const pagosRoutes = require('./routes/pagos');
 const acceso = require('./routes/acceso');
 
 const app = express();
@@ -71,10 +72,12 @@ const totemLimiter = rateLimit({
 });
 app.use('/api/acceso', authMiddleware, totemLimiter, acceso.publicRouter);
 
-// ---------- Rutas protegidas (/api/admin/*) ----------
+// ---------- Rutas protegidas (/api/admin/* y /api/pagos) ----------
+app.use('/api/pagos', authMiddleware, pagosRoutes);
 app.use('/api/admin', authMiddleware);
 app.use('/api/admin/socios', sociosRoutes);
 app.use('/api/admin/planes', planesRoutes);
+app.use('/api/admin/pagos', pagosRoutes);
 app.use('/api/admin/accesos', acceso.adminRouter);
 
 // ---------- 404 ----------

@@ -13,6 +13,7 @@ import {
   CheckCircle2,
   XCircle,
   UserRound,
+  AlertCircle,
 } from 'lucide-react';
 import Modal from './Modal.jsx';
 import api, { getErrorMessage } from '../api/axios';
@@ -22,7 +23,7 @@ import { formatDni, formatDate, formatDateTime } from '../utils/format';
 function Info({ icon: Icon, label, value, mono }) {
   return (
     <div className="flex items-center gap-3 rounded-xl border border-line bg-ink-750/60 px-4 py-3">
-      <Icon className="h-4 w-4 shrink-0 text-gray-500" />
+      <Icon className="h-4 w-4 shrink-0 text-brand" />
       <div className="min-w-0">
         <p className="text-[10px] font-semibold uppercase tracking-wider text-muted">{label}</p>
         <p className={`truncate text-sm ${mono ? 'font-mono' : ''}`}>{value || '—'}</p>
@@ -125,7 +126,12 @@ export default function ModalFicha({ socioId, onClose, onEdit, onChanged }) {
         )
       }
     >
-      {error && <p className="rounded-xl border border-red-500/30 bg-red-500/10 p-4 text-sm text-red-300">{error}</p>}
+      {error && (
+        <div className="flex items-center gap-2.5 rounded-xl border border-red-500/25 bg-red-500/5 p-3 text-xs text-red-300">
+          <AlertCircle className="h-4 w-4 shrink-0 text-red-400" />
+          <span>{error}</span>
+        </div>
+      )}
 
       {!socio && !error && (
         <div className="flex h-60 items-center justify-center">
@@ -137,7 +143,7 @@ export default function ModalFicha({ socioId, onClose, onEdit, onChanged }) {
         <div className="space-y-6 animate-fade-in">
           {/* Encabezado */}
           <div className="flex flex-wrap items-center gap-5">
-            <div className="flex h-16 w-16 items-center justify-center rounded-2xl border-2 border-brand bg-gradient-to-br from-brand/20 to-transparent text-xl font-extrabold">
+            <div className="flex h-16 w-16 items-center justify-center rounded-2xl border-2 border-brand/50 bg-gradient-to-br from-brand/20 via-brand/10 to-transparent text-xl font-extrabold text-white shadow-sm">
               {socio.nombre[0]}
               {socio.apellido[0]}
             </div>
@@ -150,7 +156,7 @@ export default function ModalFicha({ socioId, onClose, onEdit, onChanged }) {
                   <span className="badge-dot" />
                   {activo ? 'Activo' : 'Inactivo'}
                 </span>
-                <span className="badge border-line bg-ink-750 text-gray-300">Plan {socio.plan}</span>
+                <span className="badge border-brand/25 bg-brand/10 text-brand-300">Plan {socio.plan}</span>
                 <span className={socio.ficha_medica_entregada ? 'badge-success' : 'badge-warning'}>
                   <HeartPulse className="h-3 w-3" />
                   {socio.ficha_medica_entregada ? 'Ficha entregada' : 'Ficha pendiente'}
@@ -172,7 +178,7 @@ export default function ModalFicha({ socioId, onClose, onEdit, onChanged }) {
             <div className="relative overflow-hidden rounded-2xl border border-brand/30 bg-gradient-to-br from-brand/15 via-ink-800 to-ink-800 p-5 md:col-span-2">
               <Trophy className="absolute -right-3 -top-3 h-24 w-24 text-brand/10" />
               <p className="text-[11px] font-semibold uppercase tracking-wider text-brand-300">Puntos Hayya</p>
-              <p className="mt-1 text-4xl font-extrabold">{puntos}</p>
+              <p className="mt-1 text-4xl font-extrabold text-white">{puntos}</p>
               <p className="mt-1 text-xs text-muted">
                 Nivel <span className="font-semibold text-white">{nivel}</span> · {data.resumen?.visitas ?? 0} ingresos
               </p>

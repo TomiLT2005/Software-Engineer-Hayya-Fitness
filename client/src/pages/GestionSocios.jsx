@@ -26,23 +26,25 @@ import { formatDni, PLANES } from '../utils/format';
 const PAGE_SIZE = 8;
 
 function StatCard({ label, value, icon: Icon, tone = 'white', delay = 0 }) {
-  const tones = {
-    white: 'text-white',
-    green: 'text-emerald-400',
-    red: 'text-red-400',
-  };
+  const t = {
+    white: { text: 'text-white', ring: 'border-white/10 bg-white/[0.03] text-gray-400' },
+    green: { text: 'text-emerald-400', ring: 'border-emerald-500/25 bg-emerald-500/5 text-emerald-400' },
+    red: { text: 'text-red-400', ring: 'border-red-500/25 bg-red-500/5 text-red-400' },
+  }[tone] || { text: 'text-white', ring: 'border-white/10 bg-white/[0.03] text-gray-400' };
+
   return (
     <div
-      className="card group relative overflow-hidden px-6 py-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-line-strong animate-slide-up"
+      className="card relative overflow-hidden px-5 py-3.5 sm:px-6 sm:py-4 transition-all duration-200 hover:border-white/20 animate-slide-up"
       style={{ animationDelay: `${delay}ms` }}
     >
-      <div className="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-brand/5 blur-2xl transition-opacity group-hover:bg-brand/10" />
-      <div className="flex items-start justify-between">
+      <div className="flex items-center justify-between">
         <p className="text-[11px] font-semibold uppercase tracking-wider text-muted">{label}</p>
-        <Icon className="h-4 w-4 text-gray-600 transition-colors group-hover:text-brand" />
+        <span className={`flex h-7 w-7 items-center justify-center rounded-lg border ${t.ring}`}>
+          <Icon className="h-3.5 w-3.5" />
+        </span>
       </div>
-      <p className={`mt-2 text-4xl font-extrabold tabular-nums ${tones[tone]}`}>
-        {value === null ? <span className="inline-block h-9 w-16 animate-pulse rounded-lg bg-ink-700" /> : value}
+      <p className={`mt-2 text-2xl sm:text-[28px] font-bold tabular-nums tracking-tight ${t.text}`}>
+        {value === null ? <span className="inline-block h-8 w-14 animate-pulse rounded-lg bg-ink-700" /> : value}
       </p>
     </div>
   );
@@ -284,7 +286,7 @@ export default function GestionSocios() {
                     <td className="td font-mono text-[13px] text-gray-300">{formatDni(s.dni)}</td>
                     <td className="td">
                       <div className="flex items-center gap-3">
-                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-line bg-ink-750 text-[11px] font-bold text-gray-300 group-hover:border-brand/40">
+                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/[0.03] text-[11px] font-bold text-gray-300">
                           {s.nombre[0]}
                           {s.apellido[0]}
                         </div>
@@ -382,7 +384,7 @@ export default function GestionSocios() {
                 key={n}
                 onClick={() => setPage(n)}
                 className={`h-8 min-w-[32px] rounded-lg px-2 text-xs font-bold transition-all ${
-                  n === pagination.page ? 'bg-brand text-white shadow-glow-sm' : 'border border-line bg-ink-750 text-gray-400 hover:text-white'
+                  n === pagination.page ? 'bg-brand text-white' : 'border border-line bg-ink-750 text-gray-400 hover:text-white'
                 }`}
                 aria-current={n === pagination.page ? 'page' : undefined}
               >

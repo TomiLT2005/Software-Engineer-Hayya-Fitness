@@ -291,8 +291,8 @@ export default function ModalPlan({ open, plan, onClose, onSaved }) {
     >
       <form onSubmit={handleSubmit} className="space-y-5" noValidate>
         {serverError && (
-          <div className="flex items-center gap-2 rounded-xl border border-red-500/30 bg-red-500/10 p-3 text-sm text-red-400">
-            <AlertCircle className="h-4 w-4 shrink-0" />
+          <div className="flex items-center gap-2.5 rounded-xl border border-red-500/25 bg-red-500/5 p-3 text-xs text-red-300">
+            <AlertCircle className="h-4 w-4 shrink-0 text-red-400" />
             <span>{serverError}</span>
           </div>
         )}
@@ -508,8 +508,8 @@ export default function ModalPlan({ open, plan, onClose, onSaved }) {
                   form.imagen_url.includes('pinterest.com') ||
                   form.imagen_url.includes('google.com/imgres') ||
                   form.imagen_url.includes('instagram.com')) && (
-                  <div className="flex items-start gap-2 rounded-lg border border-amber-500/30 bg-amber-500/10 p-2.5 text-xs text-amber-300">
-                    <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" />
+                  <div className="flex items-start gap-2.5 rounded-xl border border-amber-500/25 bg-amber-500/5 p-3 text-xs text-amber-300">
+                    <AlertCircle className="h-4 w-4 shrink-0 mt-0.5 text-amber-400" />
                     <div>
                       <p className="font-semibold">Parece que pegaste el enlace a una página web, no a la imagen directa.</p>
                       <p className="mt-0.5 text-gray-300">
@@ -540,7 +540,7 @@ export default function ModalPlan({ open, plan, onClose, onSaved }) {
                     }}
                     className={`flex items-center gap-2.5 rounded-xl border p-2 text-left transition-all ${
                       isSelected
-                        ? 'border-brand bg-brand/15 text-white shadow-glow-sm'
+                        ? 'border-brand bg-brand/15 text-white'
                         : 'border-line bg-ink-750 text-gray-300 hover:border-line-strong hover:bg-ink-700'
                     }`}
                   >
@@ -625,7 +625,7 @@ export default function ModalPlan({ open, plan, onClose, onSaved }) {
                 {form.beneficios.map((ben, idx) => (
                   <span
                     key={`${ben}-${idx}`}
-                    className="inline-flex items-center gap-1.5 rounded-lg border border-brand/30 bg-brand/10 py-1 pl-2.5 pr-1.5 text-xs font-medium text-white animate-fade-in"
+                    className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/[0.03] py-1 pl-2.5 pr-1.5 text-xs font-medium text-gray-200 animate-fade-in"
                   >
                     <span className="h-1.5 w-1.5 rounded-full bg-brand" />
                     <span>{ben}</span>
@@ -657,7 +657,7 @@ export default function ModalPlan({ open, plan, onClose, onSaved }) {
                   className={`rounded-lg border px-2 py-0.5 text-[11px] transition-colors ${
                     already
                       ? 'border-transparent bg-white/[0.03] text-gray-600 cursor-default'
-                      : 'border-line bg-ink-750 text-gray-400 hover:border-brand/40 hover:text-white'
+                      : 'border-white/10 bg-white/[0.02] text-gray-400 hover:border-white/20 hover:text-white'
                   }`}
                 >
                   {already ? '✓ ' : '+ '}
@@ -669,7 +669,7 @@ export default function ModalPlan({ open, plan, onClose, onSaved }) {
         </div>
 
         {/* Estado */}
-        <div className="flex items-center justify-between rounded-xl border border-line bg-ink-750/50 p-4">
+        <div className="flex items-center justify-between rounded-xl border border-white/10 bg-white/[0.02] p-4">
           <div>
             <p className="text-sm font-semibold">Estado del Plan</p>
             <p className="text-xs text-muted">
@@ -688,8 +688,8 @@ export default function ModalPlan({ open, plan, onClose, onSaved }) {
             }
             className={`btn ${
               form.estado === 'Activo'
-                ? 'border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20'
-                : 'border border-red-500/30 bg-red-500/10 text-red-400 hover:bg-red-500/20'
+                ? 'border border-emerald-500/25 bg-emerald-500/5 text-emerald-400 hover:bg-emerald-500/10'
+                : 'border border-red-500/25 bg-red-500/5 text-red-400 hover:bg-red-500/10'
             }`}
           >
             <span

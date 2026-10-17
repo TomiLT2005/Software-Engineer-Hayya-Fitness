@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import {
-  LayoutGrid,
+  House,
   Users,
-  CreditCard,
-  Layers,
-  Settings,
+  Banknote,
+  SlidersHorizontal,
+  CircleHelp,
   LogOut,
   MonitorSmartphone,
   ExternalLink,
@@ -14,19 +14,32 @@ import {
   AlertTriangle,
   X,
 } from 'lucide-react';
-import { ClubBadge } from './Logo.jsx';
+import { HorizontalLogo } from './Logo.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 import { useToast } from '../context/ToastContext.jsx';
 
+/** Ícono de 4 círculos (Planes), estilo lucide */
+function FourCircles({ className = '' }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className} aria-hidden="true">
+      <circle cx="7" cy="7" r="3.5" />
+      <circle cx="17" cy="7" r="3.5" />
+      <circle cx="7" cy="17" r="3.5" />
+      <circle cx="17" cy="17" r="3.5" />
+    </svg>
+  );
+}
+
 const NAV = [
-  { to: '/admin/inicio', label: 'Inicio', icon: LayoutGrid },
+  { to: '/admin/inicio', label: 'Inicio', icon: House },
   { to: '/admin/socios', label: 'Socios', icon: Users },
-  { label: 'Pagos', icon: CreditCard, soon: true },
-  { to: '/admin/planes', label: 'Planes', icon: Layers },
+  { to: '/admin/pagos', label: 'Pagos', icon: Banknote },
+  { to: '/admin/planes', label: 'Planes', icon: FourCircles },
 ];
 
 const itemBase =
-  'group relative flex w-full items-center gap-3 rounded-xl border px-4 py-2.5 text-sm font-medium transition-all duration-200';
+  'group relative flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-[15px] font-normal transition-all duration-200';
+const itemIdle = 'text-gray-100 hover:bg-white/[0.06] hover:text-white';
 
 export default function Sidebar({ open, onClose }) {
   const { logout } = useAuth();
@@ -101,25 +114,24 @@ export default function Sidebar({ open, onClose }) {
           <X className="h-4 w-4" />
         </button>
 
-        <div className="flex justify-center pb-8 pt-8">
-          <ClubBadge />
+        <div className="flex justify-center px-5 pb-14 pt-7">
+          <HorizontalLogo />
         </div>
 
-        <nav className="flex-1 space-y-1.5 px-4">
+        <nav className="flex-1 space-y-2 px-5">
           {NAV.map(({ to, label, icon: Icon, soon }) =>
             soon ? (
-              <div
+              <button
+                type="button"
                 key={label}
-                className={`${itemBase} cursor-not-allowed border-transparent text-gray-500`}
-                aria-disabled="true"
+                id={`nav-${label.toLowerCase()}`}
+                onClick={() => toast('Pagos estará disponible próximamente')}
+                className={`${itemBase} ${itemIdle}`}
                 title="Disponible próximamente"
               >
                 <Icon className="h-[18px] w-[18px]" />
                 <span>{label}</span>
-                <span className="ml-auto rounded-md border border-brand/25 bg-brand/10 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-brand-300">
-                  Próximamente
-                </span>
-              </div>
+              </button>
             ) : (
               <NavLink
                 key={label}
@@ -129,39 +141,35 @@ export default function Sidebar({ open, onClose }) {
                 className={({ isActive }) =>
                   `${itemBase} ${
                     isActive
-                      ? 'border-brand bg-brand/10 text-white shadow-[0_0_24px_-8px_rgba(255,85,0,.7)]'
-                      : 'border-transparent text-gray-400 hover:bg-white/[0.03] hover:text-white'
+                      ? 'bg-brand text-white'
+                      : itemIdle
                   }`
                 }
               >
-                {({ isActive }) => (
-                  <>
-                    <Icon className={`h-[18px] w-[18px] ${isActive ? 'text-brand' : ''}`} />
-                    <span>{label}</span>
-                  </>
-                )}
+                <Icon className="h-[18px] w-[18px]" />
+                <span>{label}</span>
               </NavLink>
             )
           )}
         </nav>
 
-        <div className="mx-4 space-y-1 border-t border-line py-4">
+        <div className="space-y-2 px-5 pb-6 pt-4">
           <div className="relative" ref={settingsRef}>
             <button
               id="btn-ajustes"
               onClick={() => setSettingsOpen((v) => !v)}
-              className={`${itemBase} border-transparent text-gray-400 hover:bg-white/[0.03] hover:text-white`}
+              className={`${itemBase} ${settingsOpen ? 'bg-white/[0.06] text-white' : itemIdle}`}
               aria-expanded={settingsOpen}
             >
-              <Settings className={`h-[18px] w-[18px] transition-transform duration-500 ${settingsOpen ? 'rotate-90' : ''}`} />
+              <SlidersHorizontal className="h-[18px] w-[18px]" />
               <span>Ajustes</span>
-              <ChevronUp className={`ml-auto h-4 w-4 transition-transform ${settingsOpen ? '' : 'rotate-180'}`} />
+              <ChevronUp className={`ml-auto h-4 w-4 text-gray-400 transition-transform ${settingsOpen ? '' : 'rotate-180'}`} />
             </button>
 
             {settingsOpen && (
-              <div className="absolute bottom-full left-0 right-0 mb-2 overflow-hidden rounded-2xl border border-line bg-ink-850 p-2 shadow-2xl animate-scale-in">
+              <div className="absolute bottom-full left-0 right-0 mb-2 overflow-hidden rounded-2xl border border-line bg-ink-800 p-2 shadow-xl animate-scale-in">
                 {/* Apartado Terminal */}
-                <div className="rounded-xl border border-line/70 bg-ink-800/60 overflow-hidden">
+                <div className="rounded-xl border border-line bg-ink-750/60 overflow-hidden">
                   <button
                     type="button"
                     id="btn-apartado-terminal"
@@ -173,7 +181,7 @@ export default function Sidebar({ open, onClose }) {
                     <span>Terminal</span>
                     <span
                       className={`ml-1.5 h-1.5 w-1.5 rounded-full ${
-                        terminalActiva ? 'bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]' : 'bg-red-400'
+                        terminalActiva ? 'bg-emerald-400' : 'bg-red-400'
                       }`}
                     />
                     <ChevronDown
@@ -219,7 +227,7 @@ export default function Sidebar({ open, onClose }) {
                       {!terminalActiva && (
                         <div
                           role="alert"
-                          className="flex items-start gap-2 rounded-lg border border-amber-500/30 bg-amber-500/10 p-2 text-[11px] leading-relaxed text-amber-300 animate-fade-in"
+                          className="flex items-start gap-2 rounded-lg border border-amber-500/25 bg-amber-500/5 p-2 text-[11px] leading-relaxed text-amber-300 animate-fade-in"
                         >
                           <AlertTriangle className="h-3.5 w-3.5 shrink-0 text-amber-400 mt-0.5" />
                           <span>La terminal no fue encendida. Activá el interruptor para habilitar ingresos.</span>
@@ -232,7 +240,7 @@ export default function Sidebar({ open, onClose }) {
                         href="/terminal"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex w-full items-center justify-center gap-2 rounded-lg border border-line bg-ink-800 px-3 py-2 text-xs font-semibold text-gray-200 transition-all hover:border-brand/40 hover:bg-brand/10 hover:text-white"
+                        className="flex w-full items-center justify-center gap-2 rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2 text-xs font-semibold text-gray-200 transition-all hover:border-white/20 hover:bg-white/[0.07] hover:text-white"
                       >
                         <ExternalLink className="h-3.5 w-3.5 text-brand" />
                         <span>Abrir en nueva pestaña</span>
@@ -245,10 +253,20 @@ export default function Sidebar({ open, onClose }) {
           </div>
 
           <button
+            type="button"
+            id="btn-ayuda"
+            onClick={() => toast('La sección de ayuda estará disponible próximamente')}
+            className={`${itemBase} ${itemIdle}`}
+          >
+            <CircleHelp className="h-[18px] w-[18px]" />
+            <span>Ayuda</span>
+          </button>
+
+          <button
             id="btn-cerrar-sesion"
             onClick={handleLogout}
             disabled={loggingOut}
-            className={`${itemBase} border-transparent text-red-400 hover:bg-red-500/10 disabled:opacity-60`}
+            className={`${itemBase} text-[#F87171] hover:bg-red-500/5 hover:text-red-300 disabled:opacity-60`}
           >
             <LogOut className="h-[18px] w-[18px]" />
             <span>{loggingOut ? 'Cerrando…' : 'Cerrar Sesión'}</span>

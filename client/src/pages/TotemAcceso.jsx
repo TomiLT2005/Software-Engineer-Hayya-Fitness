@@ -208,12 +208,12 @@ export default function TotemAcceso() {
           </div>
         </div>
         {terminalActiva ? (
-          <span className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-4 py-2 text-[11px] font-bold tracking-wider text-emerald-400">
+          <span className="inline-flex items-center gap-2 rounded-full border border-emerald-500/25 bg-emerald-500/5 px-4 py-2 text-[11px] font-bold tracking-wider text-emerald-400">
             <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse-ring" />
             TÓTEM 01 • ACCESO PRINCIPAL
           </span>
         ) : (
-          <span className="inline-flex items-center gap-2 rounded-full border border-amber-500/30 bg-amber-500/10 px-4 py-2 text-[11px] font-bold tracking-wider text-amber-400">
+          <span className="inline-flex items-center gap-2 rounded-full border border-amber-500/25 bg-amber-500/5 px-4 py-2 text-[11px] font-bold tracking-wider text-amber-400">
             <span className="h-2 w-2 rounded-full bg-amber-400" />
             TÓTEM 01 • FUERA DE LÍNEA
           </span>
@@ -245,11 +245,11 @@ export default function TotemAcceso() {
         {!terminalActiva ? (
           <div className="w-full max-w-md animate-scale-in">
             <div className="rounded-3xl border border-line bg-ink-850/90 p-8 text-center backdrop-blur shadow-2xl">
-              <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-2xl border border-amber-500/30 bg-amber-500/10 text-amber-400 shadow-[0_0_40px_-10px_rgba(245,158,11,0.5)]">
+              <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-2xl border border-amber-500/25 bg-amber-500/5 text-amber-400">
                 <PowerOff className="h-10 w-10" />
               </div>
 
-              <span className="mt-5 inline-block rounded-full border border-amber-500/25 bg-amber-500/10 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-amber-400">
+              <span className="mt-5 inline-block rounded-full border border-amber-500/25 bg-amber-500/5 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-amber-400">
                 Terminal Apagada
               </span>
 
@@ -355,9 +355,9 @@ export default function TotemAcceso() {
 
             {result.tipo === 'ok' ? (
               <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
-                <span className="rounded-full border border-line bg-ink-800 px-4 py-2 text-sm text-gray-300">Plan {result.socio.plan}</span>
-                <span className="inline-flex items-center gap-2 rounded-full border border-brand/40 bg-brand/10 px-4 py-2 text-sm font-semibold text-brand-300">
-                  <Trophy className="h-4 w-4" /> +{result.socio.puntosGanados} pts · {result.socio.puntos} totales
+                <span className="rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 text-sm text-gray-300">Plan {result.socio.plan}</span>
+                <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 text-sm font-semibold text-gray-200">
+                  <Trophy className="h-4 w-4 text-brand" /> +{result.socio.puntosGanados} pts · {result.socio.puntos} totales
                 </span>
               </div>
             ) : (

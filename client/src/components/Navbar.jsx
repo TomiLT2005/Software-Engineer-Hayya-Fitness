@@ -29,10 +29,10 @@ export default function Navbar({ title, subtitle, children }) {
           <span className="absolute right-2.5 top-2.5 h-1.5 w-1.5 rounded-full bg-brand" />
         </button>
 
-        <div className="flex items-center gap-3 rounded-xl border border-line bg-ink-800 py-1.5 pl-1.5 pr-4">
-          <div className="relative flex h-9 w-9 items-center justify-center rounded-full border-2 border-brand bg-ink-900 text-xs font-bold">
+        <div className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.02] py-1.5 pl-1.5 pr-4">
+          <div className="relative flex h-8 w-8 items-center justify-center rounded-lg border border-white/10 bg-white/[0.04] text-xs font-bold text-gray-200">
             {initials}
-            <span className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full border-2 border-ink-800 bg-emerald-500" />
+            <span className="absolute -bottom-0.5 -right-0.5 h-2 w-2 rounded-full border border-ink-900 bg-emerald-500" />
           </div>
           <div className="leading-tight">
             <p className="text-sm font-semibold">Hola {displayName}!</p>
