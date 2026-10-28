@@ -18,6 +18,7 @@ import ModalHistorialPagos from '../components/ModalHistorialPagos.jsx';
 import api, { getErrorMessage } from '../api/axios';
 import { useToast } from '../context/ToastContext.jsx';
 import { formatDni, formatDate } from '../utils/format';
+import { useTourUi } from '../tour/tourBus.js';
 
 const PAGE_SIZE = 8;
 
@@ -176,6 +177,20 @@ export default function GestionPagos() {
     setHistorialSocioId(socioId);
   };
 
+  // El guided tour abre el formulario de cobro y el historial del primer socio para explicarlos
+  useTourUi(({ ui }) => {
+    if (ui === 'pago-nuevo') {
+      if (!modalPagoOpen) handleOpenNuevoPago();
+    } else {
+      setModalPagoOpen(false);
+    }
+    if (ui === 'pago-historial') {
+      if (!historialSocioId && rows[0]) handleOpenHistorial(rows[0].id);
+    } else {
+      setHistorialSocioId(null);
+    }
+  });
+
   // Botones de páginas
   const pages = useMemo(() => {
     const { totalPages } = pagination;
@@ -190,7 +205,7 @@ export default function GestionPagos() {
       <Navbar title="Pagos" subtitle="Control financiero de abonos y membresías" />
 
       {/* Tarjetas de Métricas Superiores (KPIs dinámicos SQL COUNT) */}
-      <section className="grid grid-cols-1 sm:grid-cols-3 gap-4" aria-label="Métricas de Pagos">
+      <section data-tour="pagos-kpis" className="grid grid-cols-1 sm:grid-cols-3 gap-4" aria-label="Métricas de Pagos">
         <KpiCard
           label="Total Socios"
           value={kpis.total}
@@ -266,6 +281,7 @@ export default function GestionPagos() {
           </div>
 
           <button
+            data-tour="pagos-refresh"
             onClick={refreshAll}
             className="icon-btn h-10 w-10 rounded-xl"
             aria-label="Actualizar datos"
@@ -286,7 +302,7 @@ export default function GestionPagos() {
       </section>
 
       {/* Tabla Principal de Estado de Cuentas */}
-      <section className="card mt-5 overflow-hidden">
+      <section data-tour="pagos-tabla" className="card mt-5 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full min-w-[760px] text-left">
             <thead className="border-b border-line bg-ink-850/60 text-[11px] font-bold uppercase tracking-wider text-muted">
@@ -347,6 +363,7 @@ export default function GestionPagos() {
                     </td>
                     <td className="px-5 py-4 text-center">
                       <button
+                        data-tour={i === 0 ? 'pago-historial-btn' : undefined}
                         onClick={() => handleOpenHistorial(socio.id)}
                         className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-white/10 bg-white/[0.03] text-gray-400 transition-colors hover:border-white/20 hover:bg-white/[0.07] hover:text-white"
                         title={`Ver historial de pagos de ${socio.nombre}`}
@@ -386,7 +403,7 @@ export default function GestionPagos() {
 
         {/* Paginación centrada como en pagos-admin.PNG */}
         {pagination.total > 0 && (
-          <div className="flex items-center justify-center gap-2 border-t border-line bg-ink-850/40 px-6 py-4">
+          <div data-tour="pagos-paginacion" className="flex items-center justify-center gap-2 border-t border-line bg-ink-850/40 px-6 py-4">
             <button
               id="pag-anterior-pagos"
               className="btn-ghost px-3 py-1.5 text-xs text-muted hover:text-white disabled:opacity-40"

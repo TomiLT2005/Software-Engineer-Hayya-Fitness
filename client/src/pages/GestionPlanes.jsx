@@ -18,8 +18,9 @@ import ModalPlan from '../components/ModalPlan.jsx';
 import api, { getErrorMessage } from '../api/axios';
 import { useToast } from '../context/ToastContext.jsx';
 import { formatMoney } from '../utils/format';
+import { useTourUi } from '../tour/tourBus.js';
 
-function PlanCard({ plan, onEdit, onToggleStatus, isToggling }) {
+function PlanCard({ plan, onEdit, onToggleStatus, isToggling, isFirst }) {
   const [imgError, setImgError] = useState(false);
   const isActive = plan.estado === 'Activo';
 
@@ -38,6 +39,7 @@ function PlanCard({ plan, onEdit, onToggleStatus, isToggling }) {
 
   return (
     <div
+      data-tour={isFirst ? 'plan-card' : undefined}
       className={`card group flex flex-col justify-between overflow-hidden p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-line-strong ${!isActive ? 'opacity-80 border-dashed' : ''
         }`}
     >
@@ -78,7 +80,7 @@ function PlanCard({ plan, onEdit, onToggleStatus, isToggling }) {
         </div>
 
         {/* Bloque INCLUYE + PRECIO */}
-        <div className="mt-4 flex items-start justify-between gap-4">
+        <div data-tour={isFirst ? 'plan-card-beneficios' : undefined} className="mt-4 flex items-start justify-between gap-4">
           {/* Columna Izquierda: INCLUYE */}
           <div className="min-w-0 flex-1">
             <p className="text-[11px] font-bold uppercase tracking-wider text-muted">INCLUYE:</p>
@@ -117,6 +119,7 @@ function PlanCard({ plan, onEdit, onToggleStatus, isToggling }) {
       <div className="mt-6 grid grid-cols-2 gap-3 border-t border-line/60 pt-4">
         <button
           type="button"
+          data-tour={isFirst ? 'plan-toggle' : undefined}
           onClick={() => onToggleStatus(plan)}
           disabled={isToggling}
           className={`flex items-center justify-center gap-1.5 rounded-xl border px-3 py-2.5 text-sm font-medium transition-all duration-150 ${isActive
@@ -135,6 +138,7 @@ function PlanCard({ plan, onEdit, onToggleStatus, isToggling }) {
 
         <button
           type="button"
+          data-tour={isFirst ? 'plan-editar' : undefined}
           onClick={() => onEdit(plan)}
           className="flex items-center justify-center gap-1.5 rounded-xl border border-line bg-ink-750 px-3 py-2.5 text-sm font-medium text-gray-300 transition-all duration-150 hover:border-line-strong hover:bg-ink-700 hover:text-white"
         >
@@ -239,6 +243,15 @@ export default function GestionPlanes() {
     setModalOpen(true);
   };
 
+  // El guided tour abre el formulario de nuevo plan para explicarlo
+  useTourUi(({ ui }) => {
+    if (ui === 'plan-nuevo') {
+      if (!modalOpen) handleCreateNew();
+    } else {
+      setModalOpen(false);
+    }
+  });
+
   const handleSaved = (savedPlan) => {
     fetchPlanes();
   };
@@ -252,7 +265,7 @@ export default function GestionPlanes() {
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-1 flex-wrap items-center gap-3">
           {/* Campo de búsqueda */}
-          <div className="relative min-w-[240px] flex-1 sm:max-w-xs">
+          <div data-tour="planes-buscar" className="relative min-w-[240px] flex-1 sm:max-w-xs">
             <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500" />
             <input
               type="text"
@@ -264,7 +277,7 @@ export default function GestionPlanes() {
           </div>
 
           {/* Select de Filtro */}
-          <div className="relative">
+          <div data-tour="planes-filtro" className="relative">
             <select
               value={filterEstado}
               onChange={(e) => setFilterEstado(e.target.value)}
@@ -280,6 +293,7 @@ export default function GestionPlanes() {
           </div>
 
           <button
+            data-tour="planes-refresh"
             onClick={fetchPlanes}
             className="icon-btn h-10 w-10 rounded-xl"
             title="Recargar planes"
@@ -291,6 +305,7 @@ export default function GestionPlanes() {
 
         {/* Botón "+ Nuevo Plan" vibrante en naranja como Figma */}
         <button
+          data-tour="planes-nuevo"
           onClick={handleCreateNew}
           className="btn-primary inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold tracking-wide"
         >
@@ -352,11 +367,12 @@ export default function GestionPlanes() {
           </div>
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 animate-fade-in">
-          {planes.map((plan) => (
+        <div data-tour="planes-grid" className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 animate-fade-in">
+          {planes.map((plan, idx) => (
             <PlanCard
               key={plan.id}
               plan={plan}
+              isFirst={idx === 0}
               onEdit={handleEdit}
               onToggleStatus={handleToggleStatus}
               isToggling={togglingId === plan.id}

@@ -268,13 +268,14 @@ export default function ModalPlan({ open, plan, onClose, onSaved }) {
           : 'Completá los campos para crear un nuevo arancel o membresía'
       }
       icon={isEdit ? Sparkles : Layers}
+      tour="modal-plan"
       size="lg"
       footer={
         <>
           <button type="button" onClick={onClose} disabled={saving} className="btn btn-ghost">
             Cancelar
           </button>
-          <button type="button" onClick={handleSubmit} disabled={saving} className="btn btn-primary min-w-[140px]">
+          <button type="button" onClick={handleSubmit} disabled={saving} data-tour="plan-form-guardar" className="btn btn-primary min-w-[140px]">
             {saving ? (
               <>
                 <Loader2 className="h-4 w-4 animate-spin" />
@@ -298,7 +299,7 @@ export default function ModalPlan({ open, plan, onClose, onSaved }) {
         )}
 
         {/* Nombre y Precio */}
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div data-tour="plan-form-basico" className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
             <label htmlFor="plan-nombre" className="label">
               Nombre del Plan *
@@ -343,7 +344,7 @@ export default function ModalPlan({ open, plan, onClose, onSaved }) {
         </div>
 
         {/* Descripción */}
-        <div>
+        <div data-tour="plan-form-desc">
           <label htmlFor="plan-descripcion" className="label">
             Descripción / Detalle del Plan
           </label>
@@ -361,7 +362,7 @@ export default function ModalPlan({ open, plan, onClose, onSaved }) {
         </div>
 
         {/* Portada / Imagen */}
-        <div>
+        <div data-tour="plan-form-imagen">
           <div className="mb-2 flex items-center justify-between">
             <label className="label mb-0">Imagen de Portada</label>
             {form.imagen_url && (
@@ -589,7 +590,7 @@ export default function ModalPlan({ open, plan, onClose, onSaved }) {
         </div>
 
         {/* Beneficios (INCLUYE:) */}
-        <div>
+        <div data-tour="plan-form-beneficios">
           <label className="label">Beneficios incluidos (INCLUYE:)</label>
           <div className="flex gap-2">
             <input
@@ -669,7 +670,7 @@ export default function ModalPlan({ open, plan, onClose, onSaved }) {
         </div>
 
         {/* Estado */}
-        <div className="flex items-center justify-between rounded-xl border border-white/10 bg-white/[0.02] p-4">
+        <div data-tour="plan-form-estado" className="flex items-center justify-between rounded-xl border border-white/10 bg-white/[0.02] p-4">
           <div>
             <p className="text-sm font-semibold">Estado del Plan</p>
             <p className="text-xs text-muted">

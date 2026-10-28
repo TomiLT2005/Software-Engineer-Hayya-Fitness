@@ -107,3 +107,143 @@
     @apply bg-gradient-to-r from-brand-300 via-brand-400 to-brand bg-clip-text text-transparent;
   }
 }
+
+/* ------------------------------------------------------------------ */
+/* Guided tour (driver.js) — tema oscuro con acento naranja            */
+/* ------------------------------------------------------------------ */
+.driver-popover.hayya-tour {
+  --driver-popover-font-family: 'Plus Jakarta Sans', Inter, system-ui, sans-serif;
+  min-width: 280px;
+  max-width: 340px;
+  padding: 18px 18px 14px;
+  color: #e5e7eb;
+  background: #1a1a1a;
+  border: 1px solid #363636;
+  border-radius: 16px;
+  box-shadow: 0 24px 60px -12px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(232, 93, 38, 0.1);
+}
+
+.hayya-tour .driver-popover-title {
+  padding-right: 28px;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  color: #fff;
+}
+
+.hayya-tour .driver-popover-description {
+  margin-top: 8px;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: #cbd5e1;
+}
+
+.hayya-tour .driver-popover-description b {
+  color: #fff;
+  font-weight: 700;
+}
+
+.hayya-tour .driver-popover-progress-text {
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #9ca3af;
+}
+
+.hayya-tour .driver-popover-close-btn {
+  top: 10px;
+  right: 8px;
+  width: 28px;
+  height: 28px;
+  line-height: 28px;
+  border-radius: 8px;
+  color: #9ca3af;
+  transition: color 0.15s, background-color 0.15s;
+}
+
+.hayya-tour .driver-popover-close-btn:hover,
+.hayya-tour .driver-popover-close-btn:focus-visible {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.hayya-tour .driver-popover-footer {
+  margin-top: 16px;
+}
+
+.hayya-tour .driver-popover-footer-btn {
+  padding: 7px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: #e5e7eb;
+  text-shadow: none;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  transition: background-color 0.15s, border-color 0.15s, transform 0.15s;
+}
+
+.hayya-tour .driver-popover-footer-btn:hover,
+.hayya-tour .driver-popover-footer-btn:focus-visible {
+  background: rgba(255, 255, 255, 0.09);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.hayya-tour .driver-popover-next-btn {
+  color: #fff;
+  background: #e85d26;
+  border-color: #e85d26;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.hayya-tour .driver-popover-next-btn:hover,
+.hayya-tour .driver-popover-next-btn:focus,
+.hayya-tour .driver-popover-next-btn:focus-visible {
+  background: #cc4c1a;
+  border-color: #cc4c1a;
+  outline: 2px solid rgba(232, 93, 38, 0.6);
+  outline-offset: 2px;
+}
+
+.hayya-tour .tour-kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 11px;
+  line-height: 1;
+  padding: 1.5px 5px;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #fff;
+  font-weight: 700;
+}
+
+.hayya-tour .driver-popover-arrow-side-left.driver-popover-arrow {
+  border-left-color: #1a1a1a;
+}
+
+.hayya-tour .driver-popover-arrow-side-right.driver-popover-arrow {
+  border-right-color: #1a1a1a;
+}
+
+.hayya-tour .driver-popover-arrow-side-top.driver-popover-arrow {
+  border-top-color: #1a1a1a;
+}
+
+.hayya-tour .driver-popover-arrow-side-bottom.driver-popover-arrow {
+  border-bottom-color: #1a1a1a;
+}
+
+@media (max-width: 480px) {
+  .driver-popover.hayya-tour {
+    min-width: 240px;
+    max-width: calc(100vw - 32px);
+  }
+}

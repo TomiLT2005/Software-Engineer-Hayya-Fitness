@@ -22,6 +22,7 @@ import { Wordmark } from '../components/Logo.jsx';
 import api, { getErrorMessage } from '../api/axios';
 import { useToast } from '../context/ToastContext.jsx';
 import { formatDni, PLANES } from '../utils/format';
+import { useTourUi } from '../tour/tourBus.js';
 
 const PAGE_SIZE = 8;
 
@@ -188,6 +189,20 @@ export default function GestionSocios() {
     setFormOpen(true);
   };
 
+  // El guided tour abre el formulario de alta y la ficha del primer socio para explicarlos
+  useTourUi(({ ui }) => {
+    if (ui === 'socio-nuevo') {
+      if (!formOpen) openNew();
+    } else {
+      setFormOpen(false);
+    }
+    if (ui === 'socio-ficha') {
+      if (!fichaId && rows[0]) setFichaId(rows[0].id);
+    } else {
+      setFichaId(null);
+    }
+  });
+
   const pages = useMemo(() => {
     const { totalPages } = pagination;
     const current = pagination.page;
@@ -203,7 +218,7 @@ export default function GestionSocios() {
       <Navbar title="Socios" subtitle="Gestión integral de socios, fichas médicas y membresías" />
 
       {/* KPIs */}
-      <section className="grid gap-4 sm:grid-cols-3 lg:max-w-[860px]" aria-label="Indicadores">
+      <section data-tour="socios-kpis" className="grid gap-4 sm:grid-cols-3 lg:max-w-[860px]" aria-label="Indicadores">
         <StatCard label="Total Socios" value={stats.total} icon={Users} />
         <StatCard label="Activos" value={stats.activos} icon={UserCheck} tone="green" delay={60} />
         <StatCard label="Inactivos" value={stats.inactivos} icon={UserX} tone="red" delay={120} />
@@ -241,7 +256,7 @@ export default function GestionSocios() {
             { value: 'Inactivo', label: 'Inactivo' },
           ]}
         />
-        <button onClick={refreshAll} className="icon-btn h-10 w-10 rounded-xl" aria-label="Actualizar" title="Actualizar">
+        <button data-tour="socios-refresh" onClick={refreshAll} className="icon-btn h-10 w-10 rounded-xl" aria-label="Actualizar" title="Actualizar">
           <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
         </button>
         <button id="btn-nuevo-socio" onClick={openNew} className="btn-primary ml-auto px-5">
@@ -250,7 +265,7 @@ export default function GestionSocios() {
       </section>
 
       {/* Tabla */}
-      <section className="card mt-5 overflow-hidden">
+      <section data-tour="socios-tabla" className="card mt-5 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full min-w-[860px]">
             <thead className="border-b border-line bg-ink-850/50">
@@ -315,13 +330,14 @@ export default function GestionSocios() {
                     </td>
                     <td className="td">
                       <div className="flex justify-end gap-2">
-                        <button onClick={() => setFichaId(s.id)} className="icon-btn" title="Ver ficha" aria-label={`Ver ficha de ${s.nombre}`}>
+                        <button data-tour={i === 0 ? 'socio-ver' : undefined} onClick={() => setFichaId(s.id)} className="icon-btn" title="Ver ficha" aria-label={`Ver ficha de ${s.nombre}`}>
                           <Eye className="h-4 w-4" />
                         </button>
-                        <button onClick={() => openEdit(s)} className="icon-btn" title="Editar" aria-label={`Editar a ${s.nombre}`}>
+                        <button data-tour={i === 0 ? 'socio-editar' : undefined} onClick={() => openEdit(s)} className="icon-btn" title="Editar" aria-label={`Editar a ${s.nombre}`}>
                           <Pencil className="h-3.5 w-3.5" />
                         </button>
                         <button
+                          data-tour={i === 0 ? 'socio-toggle' : undefined}
                           onClick={() => toggleEstado(s)}
                           disabled={togglingId === s.id}
                           className={`icon-btn ${activo ? 'hover:border-red-500/50 hover:text-red-400' : 'hover:border-emerald-500/50 hover:text-emerald-400'}`}
@@ -365,7 +381,7 @@ export default function GestionSocios() {
 
       {/* Paginación */}
       {pagination.total > 0 && (
-        <nav className="mt-5 flex flex-wrap items-center justify-between gap-3" aria-label="Paginación">
+        <nav data-tour="socios-paginacion" className="mt-5 flex flex-wrap items-center justify-between gap-3" aria-label="Paginación">
           <p className="text-xs text-muted">
             Mostrando {(pagination.page - 1) * PAGE_SIZE + 1}–{Math.min(pagination.page * PAGE_SIZE, pagination.total)} de{' '}
             {pagination.total} socios

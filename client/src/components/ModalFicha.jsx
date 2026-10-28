@@ -94,6 +94,7 @@ export default function ModalFicha({ socioId, onClose, onEdit, onChanged }) {
       open={Boolean(socioId)}
       onClose={onClose}
       icon={UserRound}
+      tour="modal-ficha"
       title="Ficha del Socio"
       subtitle="Detalle completo, puntos e historial de ingresos"
       size="xl"
@@ -111,15 +112,15 @@ export default function ModalFicha({ socioId, onClose, onEdit, onChanged }) {
                 </button>
               </div>
             ) : (
-              <button className="btn-danger mr-auto" onClick={() => setConfirmDelete(true)} id="btn-eliminar-socio">
+              <button className="btn-danger mr-auto" onClick={() => setConfirmDelete(true)} id="btn-eliminar-socio" data-tour="ficha-eliminar">
                 <Trash2 className="h-4 w-4" /> Eliminar
               </button>
             )}
-            <button className="btn-ghost" onClick={toggleEstado} disabled={busy === 'estado'} id="btn-ficha-estado">
+            <button className="btn-ghost" onClick={toggleEstado} disabled={busy === 'estado'} id="btn-ficha-estado" data-tour="ficha-estado">
               {busy === 'estado' ? <Loader2 className="h-4 w-4 animate-spin" /> : <Power className="h-4 w-4" />}
               {activo ? 'Desactivar' : 'Activar'}
             </button>
-            <button className="btn-primary" onClick={() => onEdit(socio)} id="btn-ficha-editar">
+            <button className="btn-primary" onClick={() => onEdit(socio)} id="btn-ficha-editar" data-tour="ficha-editar">
               <Pencil className="h-4 w-4" /> Editar
             </button>
           </>
@@ -142,7 +143,7 @@ export default function ModalFicha({ socioId, onClose, onEdit, onChanged }) {
       {socio && (
         <div className="space-y-6 animate-fade-in">
           {/* Encabezado */}
-          <div className="flex flex-wrap items-center gap-5">
+          <div data-tour="ficha-header" className="flex flex-wrap items-center gap-5">
             <div className="flex h-16 w-16 items-center justify-center rounded-2xl border-2 border-brand/50 bg-gradient-to-br from-brand/20 via-brand/10 to-transparent text-xl font-extrabold text-white shadow-sm">
               {socio.nombre[0]}
               {socio.apellido[0]}
@@ -167,7 +168,7 @@ export default function ModalFicha({ socioId, onClose, onEdit, onChanged }) {
 
           <div className="grid gap-6 md:grid-cols-5">
             {/* Datos */}
-            <div className="grid gap-3 sm:grid-cols-2 md:col-span-3">
+            <div data-tour="ficha-datos" className="grid gap-3 sm:grid-cols-2 md:col-span-3">
               <Info icon={IdCard} label="DNI" value={formatDni(socio.dni)} mono />
               <Info icon={Calendar} label="Alta" value={formatDate(socio.created_at)} />
               <Info icon={Mail} label="Correo" value={socio.correo} />
@@ -175,7 +176,7 @@ export default function ModalFicha({ socioId, onClose, onEdit, onChanged }) {
             </div>
 
             {/* Puntos */}
-            <div className="relative overflow-hidden rounded-2xl border border-brand/30 bg-gradient-to-br from-brand/15 via-ink-800 to-ink-800 p-5 md:col-span-2">
+            <div data-tour="ficha-puntos" className="relative overflow-hidden rounded-2xl border border-brand/30 bg-gradient-to-br from-brand/15 via-ink-800 to-ink-800 p-5 md:col-span-2">
               <Trophy className="absolute -right-3 -top-3 h-24 w-24 text-brand/10" />
               <p className="text-[11px] font-semibold uppercase tracking-wider text-brand-300">Puntos Hayya</p>
               <p className="mt-1 text-4xl font-extrabold text-white">{puntos}</p>
@@ -192,7 +193,7 @@ export default function ModalFicha({ socioId, onClose, onEdit, onChanged }) {
           </div>
 
           {/* Historial */}
-          <div>
+          <div data-tour="ficha-historial">
             <h4 className="mb-3 text-sm font-semibold text-gray-300">Últimos ingresos</h4>
             {data.accesos.length === 0 ? (
               <p className="rounded-xl border border-dashed border-line p-5 text-center text-sm text-muted">

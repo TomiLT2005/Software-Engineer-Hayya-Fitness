@@ -53,6 +53,7 @@ export default function ModalHistorialPagos({ open, onClose, socioId, onRegistra
           : 'Comprobantes y recibos registrados'
       }
       icon={Receipt}
+      tour="modal-historial"
       size="xl"
       footer={
         <div className="flex w-full items-center justify-between">
@@ -71,6 +72,7 @@ export default function ModalHistorialPagos({ open, onClose, socioId, onRegistra
                   onRegistrarNuevo(socio);
                 }}
                 className="btn-primary"
+                data-tour="historial-nuevo"
               >
                 + Registrar Nuevo Cobro
               </button>
@@ -95,7 +97,7 @@ export default function ModalHistorialPagos({ open, onClose, socioId, onRegistra
       {!loading && !error && socio && (
         <div className="space-y-4">
           {/* Header con resumen del socio */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 rounded-xl border border-white/10 bg-white/[0.02] p-3.5 text-xs">
+          <div data-tour="historial-resumen" className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 rounded-xl border border-white/10 bg-white/[0.02] p-3.5 text-xs">
             <div>
               <span className="text-[10px] uppercase tracking-wider text-muted block">Membresía actual</span>
               <span className="font-semibold text-white">{socio.plan}</span>
@@ -132,7 +134,7 @@ export default function ModalHistorialPagos({ open, onClose, socioId, onRegistra
               <p className="mt-0.5 text-xs text-muted">Este socio aún no tiene recibos de cobro en el sistema.</p>
             </div>
           ) : (
-            <div className="overflow-x-auto rounded-xl border border-line">
+            <div data-tour="historial-tabla" className="overflow-x-auto rounded-xl border border-line">
               <table className="w-full min-w-[620px] text-left text-xs">
                 <thead className="border-b border-line bg-ink-850/70 text-[10px] font-bold uppercase tracking-wider text-muted">
                   <tr>

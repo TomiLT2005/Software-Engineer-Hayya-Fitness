@@ -190,6 +190,7 @@ export default function ModalRegistrarPago({ open, onClose, onSaved, initialSoci
       title="Registrar Pago"
       subtitle="Cobro de cuota y renovación de membresía"
       icon={CreditCard}
+      tour="modal-pago"
       size="lg"
       footer={
         <>
@@ -199,6 +200,7 @@ export default function ModalRegistrarPago({ open, onClose, onSaved, initialSoci
           <button
             type="submit"
             form="form-registrar-pago"
+            data-tour="pago-confirmar"
             disabled={saving || !selectedSocio || loadingCotizacion}
             className="btn-primary min-w-[140px]"
           >
@@ -222,7 +224,7 @@ export default function ModalRegistrarPago({ open, onClose, onSaved, initialSoci
         )}
 
         {/* Buscador de socio */}
-        <div className="relative">
+        <div data-tour="pago-socio" className="relative">
           <label className="label">Socio *</label>
           <div className="relative">
             <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500" />
@@ -311,7 +313,7 @@ export default function ModalRegistrarPago({ open, onClose, onSaved, initialSoci
         )}
 
         {/* Plan a abonar */}
-        <div>
+        <div data-tour="pago-plan">
           <label className="label">Plan a Abonar *</label>
           <select
             value={plan}
@@ -335,7 +337,7 @@ export default function ModalRegistrarPago({ open, onClose, onSaved, initialSoci
         </div>
 
         {/* Regla de negocio: Desglose de Cobro con Recargo de Mora */}
-        <div className="rounded-xl border border-white/10 bg-white/[0.02] p-4 space-y-3">
+        <div data-tour="pago-desglose" className="rounded-xl border border-white/10 bg-white/[0.02] p-4 space-y-3">
           <div className="flex items-center justify-between text-xs text-muted border-b border-white/5 pb-2.5">
             <span className="flex items-center gap-1.5 font-medium text-gray-300">
               <Calendar className="h-3.5 w-3.5 text-gray-400" /> Día del mes de pago:
@@ -384,7 +386,7 @@ export default function ModalRegistrarPago({ open, onClose, onSaved, initialSoci
 
         {/* Método de pago */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <div>
+          <div data-tour="pago-metodo">
             <label className="label">Método de Pago *</label>
             <select
               value={metodoPago}
@@ -402,7 +404,7 @@ export default function ModalRegistrarPago({ open, onClose, onSaved, initialSoci
             </select>
           </div>
 
-          <div>
+          <div data-tour="pago-comprobante">
             <label className="label">
               N° Comprobante {metodoPago === 'Transferencia' ? '*' : '(Opcional)'}
             </label>

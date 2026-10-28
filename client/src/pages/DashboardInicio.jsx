@@ -108,7 +108,7 @@ export default function DashboardInicio() {
         </div>
       )}
 
-      <section className="grid min-w-0 gap-3 sm:grid-cols-2 md:grid-cols-3">
+      <section data-tour="inicio-kpis" className="grid min-w-0 gap-3 sm:grid-cols-2 md:grid-cols-3">
         <KPI label="Total Ingresos" value={resumen?.total} icon={LogIn} tone="white" hint="Intentos registrados hoy" delay={0} />
         <KPI label="Permitidos" value={resumen?.permitidos} icon={CheckCircle2} tone="green" hint={`${tasa}% de aprobación`} delay={60} />
         <div className="sm:col-span-2 md:col-span-1">
@@ -118,7 +118,7 @@ export default function DashboardInicio() {
 
       <section className="mt-4 grid min-w-0 gap-4 xl:grid-cols-3">
         {/* Actividad por hora */}
-        <div className="card min-w-0 overflow-hidden p-4 sm:p-5 xl:col-span-2">
+        <div data-tour="inicio-afluencia" className="card min-w-0 overflow-hidden p-4 sm:p-5 xl:col-span-2">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h2 className="text-base font-bold">Afluencia por hora</h2>
@@ -157,7 +157,7 @@ export default function DashboardInicio() {
         </div>
 
         {/* Tótem */}
-        <div className="card relative flex min-w-0 flex-col overflow-hidden p-4 sm:p-5">
+        <div data-tour="inicio-totem" className="card relative flex min-w-0 flex-col overflow-hidden p-4 sm:p-5">
           <div className="relative flex items-center gap-3">
             <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/[0.03] text-gray-300">
               <MonitorSmartphone className="h-4.5 w-4.5 text-gray-300" />
@@ -192,7 +192,7 @@ export default function DashboardInicio() {
       </section>
 
       {/* Últimos ingresos */}
-      <section className="card mt-5 min-w-0 overflow-hidden">
+      <section data-tour="inicio-ingresos" className="card mt-5 min-w-0 overflow-hidden">
         <div className="flex flex-col gap-3 border-b border-line px-5 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
           <div className="flex items-center gap-3">
             <Activity className="h-4 w-4 shrink-0 text-brand" />

@@ -28,9 +28,9 @@ function validate(f) {
   return e;
 }
 
-function Field({ id, label, error, icon: Icon, children }) {
+function Field({ id, label, error, icon: Icon, tour, children }) {
   return (
-    <div>
+    <div data-tour={tour}>
       <label htmlFor={id} className="label">
         {label}
       </label>
@@ -165,6 +165,7 @@ export default function ModalSocio({ open, socio, onClose, onSaved }) {
       open={open}
       onClose={saving ? undefined : onClose}
       icon={isEdit ? UserCog : UserPlus}
+      tour="modal-socio"
       title={isEdit ? 'Editar Socio' : 'Nuevo Socio'}
       subtitle={isEdit ? `Modificá los datos de ${socio?.nombre} ${socio?.apellido}` : 'Completá los datos para dar de alta un socio'}
       footer={
@@ -172,7 +173,7 @@ export default function ModalSocio({ open, socio, onClose, onSaved }) {
           <button type="button" className="btn-ghost" onClick={onClose} disabled={saving}>
             Cancelar
           </button>
-          <button type="submit" form="form-socio" id="btn-guardar-socio" className="btn-primary min-w-[150px]" disabled={saving}>
+          <button type="submit" form="form-socio" id="btn-guardar-socio" data-tour="socio-form-guardar" className="btn-primary min-w-[150px]" disabled={saving}>
             {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Check className="h-4 w-4" />}
             {isEdit ? 'Guardar cambios' : 'Crear socio'}
           </button>
@@ -187,7 +188,7 @@ export default function ModalSocio({ open, socio, onClose, onSaved }) {
           </div>
         )}
 
-        <Field id="socio-dni" label="DNI" error={errors.dni} icon={IdCard}>
+        <Field id="socio-dni" label="DNI" error={errors.dni} icon={IdCard} tour="socio-form-dni">
           <input
             id="socio-dni"
             inputMode="numeric"
@@ -200,7 +201,7 @@ export default function ModalSocio({ open, socio, onClose, onSaved }) {
           />
         </Field>
 
-        <div className="grid gap-5 sm:grid-cols-2">
+        <div data-tour="socio-form-nombre" className="grid gap-5 sm:grid-cols-2">
           <Field id="socio-nombre" label="Nombre" error={errors.nombre}>
             <input
               id="socio-nombre"
@@ -223,7 +224,7 @@ export default function ModalSocio({ open, socio, onClose, onSaved }) {
           </Field>
         </div>
 
-        <div className="grid gap-5 sm:grid-cols-2">
+        <div data-tour="socio-form-contacto" className="grid gap-5 sm:grid-cols-2">
           <Field id="socio-correo" label="Correo" error={errors.correo} icon={Mail}>
             <input
               id="socio-correo"
@@ -249,7 +250,7 @@ export default function ModalSocio({ open, socio, onClose, onSaved }) {
         </div>
 
         {/* Selección dinámica de Plan */}
-        <div>
+        <div data-tour="socio-form-plan">
           <div className="mb-1.5 flex items-center justify-between">
             <span className="label mb-0">Plan de Membresía</span>
             {loadingPlanes && (
@@ -306,6 +307,7 @@ export default function ModalSocio({ open, socio, onClose, onSaved }) {
 
         <label
           htmlFor="socio-ficha"
+          data-tour="socio-form-ficha"
           className={`flex cursor-pointer items-center gap-4 rounded-xl border p-4 transition-colors ${
             form.ficha_medica_entregada ? 'border-emerald-500/40 bg-emerald-500/5' : 'border-line bg-ink-750 hover:border-line-strong'
           }`}

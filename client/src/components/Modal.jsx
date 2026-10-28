@@ -1,12 +1,20 @@
 import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { X } from 'lucide-react';
+import { CircleHelp, X } from 'lucide-react';
+import { useTour } from '../tour/TourContext.jsx';
 
-/** Modal base reutilizable: overlay con blur, cierre con Escape y bloqueo de scroll. */
-export default function Modal({ open, onClose, title, subtitle, icon: Icon, children, footer, size = 'lg' }) {
+/**
+ * Modal base reutilizable: overlay con blur, cierre con Escape y bloqueo de scroll.
+ * `tour` (opcional): clave del tutorial guiado del modal; si se pasa, aparece un botón "?" en el encabezado.
+ */
+export default function Modal({ open, onClose, title, subtitle, icon: Icon, children, footer, size = 'lg', tour }) {
+  const { startTour } = useTour();
   useEffect(() => {
     if (!open) return undefined;
-    const onKey = (e) => e.key === 'Escape' && onClose?.();
+    const onKey = (e) => {
+      // Con el tutorial activo, Escape cierra el tutorial (no el modal)
+      if (e.key === 'Escape' && !document.body.classList.contains('driver-active')) onClose?.();
+    };
     document.addEventListener('keydown', onKey);
     const prev = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
@@ -36,6 +44,17 @@ export default function Modal({ open, onClose, title, subtitle, icon: Icon, chil
             <h2 className="text-base font-bold text-white">{title}</h2>
             {subtitle && <p className="mt-0.5 text-xs text-muted">{subtitle}</p>}
           </div>
+          {tour && (
+            <button
+              type="button"
+              onClick={() => startTour(tour)}
+              className="icon-btn"
+              aria-label="Ver tutorial de esta ventana"
+              title="Ver tutorial de esta ventana"
+            >
+              <CircleHelp className="h-4 w-4" />
+            </button>
+          )}
           <button onClick={onClose} className="icon-btn" aria-label="Cerrar">
             <X className="h-4 w-4" />
           </button>
