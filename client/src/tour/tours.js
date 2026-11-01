@@ -268,25 +268,17 @@ const inicio = [
     element: '#switch-terminal',
     sidebar: true,
     ui: 'ajustes',
-    title: 'Encender / apagar el tótem',
+    title: 'Terminal de acceso',
     description:
-      'Interruptor directo de la terminal de acceso. Si está apagada, nadie puede ingresar con el DNI. El indicador verde o rojo muestra su estado.',
+      'Interruptor directo de la terminal. Al encenderlo se activa el sistema y se abre automáticamente la pantalla del tótem en una nueva pestaña.',
     side: 'right',
   },
   {
-    element: '#link-abrir-totem',
+    element: '#btn-guia',
     sidebar: true,
-    ui: 'ajustes',
-    title: 'Abrir el tótem',
-    description: 'Abre el tótem de acceso en una pestaña nueva, listo para la pantalla táctil de la entrada.',
-    side: 'right',
-  },
-  {
-    element: '#btn-ayuda',
-    sidebar: true,
-    title: 'Ayuda',
+    title: 'Guía',
     description:
-      'Este botón lanza el tutorial de la sección en la que estés. Entrá a Socios, Pagos o Planes y tocalo para ver su guía.',
+      'Este botón lanza el tutorial guiado de la sección en la que estés. Entrá a Socios, Pagos o Planes y tocalo para ver su guía interactiva.',
     side: 'right',
   },
   {

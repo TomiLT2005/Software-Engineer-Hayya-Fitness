@@ -5,13 +5,11 @@ import {
   Users,
   Banknote,
   SlidersHorizontal,
-  CircleHelp,
-  LogOut,
-  MonitorSmartphone,
-  ExternalLink,
   ChevronUp,
   ChevronDown,
-  AlertTriangle,
+  MonitorCheck,
+  Footprints,
+  LogOut,
   X,
 } from 'lucide-react';
 import { HorizontalLogo } from './Logo.jsx';
@@ -47,7 +45,7 @@ export default function Sidebar({ open, onClose }) {
   const { logout } = useAuth();
   const toast = useToast();
   const navigate = useNavigate();
-  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(true);
   const [terminalActiva, setTerminalActiva] = useState(() => {
     const saved = localStorage.getItem('hayya_terminal_activa');
     return saved === 'true';
@@ -57,19 +55,9 @@ export default function Sidebar({ open, onClose }) {
 
   const { startPageTour, hasPageTour } = useTour();
 
-  useEffect(() => {
-    const onClick = (e) => {
-      // Mientras corre el tutorial, el menú de Ajustes lo controla el tour (no el clic afuera)
-      if (document.body.classList.contains('driver-active')) return;
-      if (settingsRef.current && !settingsRef.current.contains(e.target)) setSettingsOpen(false);
-    };
-    document.addEventListener('mousedown', onClick);
-    return () => document.removeEventListener('mousedown', onClick);
-  }, []);
-
   // El guided tour abre el menú de Ajustes para poder mostrar sus opciones directamente
   useTourUi(({ ui }) => {
-    setSettingsOpen(ui === 'ajustes');
+    if (ui === 'ajustes') setSettingsOpen(true);
   });
 
   useEffect(() => {
@@ -84,12 +72,17 @@ export default function Sidebar({ open, onClose }) {
   }, []);
 
   const handleToggleTerminal = (e) => {
-    e.stopPropagation();
+    e?.stopPropagation?.();
     const next = !terminalActiva;
     setTerminalActiva(next);
     localStorage.setItem('hayya_terminal_activa', String(next));
     window.dispatchEvent(new Event('storage'));
-    toast(next ? 'Terminal de acceso encendida' : 'Terminal de acceso apagada');
+    if (next) {
+      toast('Terminal de acceso encendida');
+      window.open('/terminal', '_blank');
+    } else {
+      toast('Terminal de acceso apagada');
+    }
   };
 
   const handleLogout = async () => {
@@ -163,121 +156,90 @@ export default function Sidebar({ open, onClose }) {
           )}
         </nav>
 
-        <div className="space-y-2 px-5 pb-6 pt-4">
-          <div className="relative" ref={settingsRef}>
+        <div className="space-y-1.5 px-5 pb-6 pt-2">
+          {/* Línea divisoria tal como muestra la imagen de Figma */}
+          <div className="my-3 border-t border-line/60" />
+
+          {/* Menú acordeón de Ajustes */}
+          <div ref={settingsRef} className="space-y-1">
             <button
               id="btn-ajustes"
+              type="button"
               onClick={() => setSettingsOpen((v) => !v)}
-              className={`${itemBase} ${settingsOpen ? 'bg-white/[0.06] text-white' : itemIdle}`}
+              className={`${itemBase} ${settingsOpen ? 'text-white' : itemIdle}`}
               aria-expanded={settingsOpen}
             >
               <SlidersHorizontal className="h-[18px] w-[18px]" />
               <span>Ajustes</span>
-              <span
-                className={`ml-1.5 h-2 w-2 rounded-full transition-colors ${
-                  terminalActiva
-                    ? 'bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.5)]'
-                    : 'bg-red-400/80'
-                }`}
-                title={terminalActiva ? 'Terminal encendida' : 'Terminal apagada'}
-              />
-              <ChevronUp className={`ml-auto h-4 w-4 text-gray-400 transition-transform duration-200 ${settingsOpen ? '' : 'rotate-180'}`} />
+              {settingsOpen ? (
+                <ChevronUp className="ml-auto h-4 w-4 text-gray-400 transition-transform duration-200" />
+              ) : (
+                <ChevronDown className="ml-auto h-4 w-4 text-gray-400 transition-transform duration-200" />
+              )}
             </button>
 
+            {/* Submenú extendido de Ajustes (inline idéntico a Figma) */}
             {settingsOpen && (
-              <div className="absolute bottom-full left-0 right-0 mb-2 overflow-hidden rounded-2xl border border-line bg-ink-800 p-3 shadow-2xl animate-scale-in">
-                {/* Cabecera directa con estado de la Terminal */}
-                <div className="mb-2.5 flex items-center justify-between border-b border-line/60 pb-2">
-                  <div className="flex items-center gap-2">
-                    <MonitorSmartphone className="h-4 w-4 text-brand" />
-                    <span className="text-xs font-semibold text-white">Terminal de Acceso</span>
-                  </div>
-                  <span
-                    className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold ${
-                      terminalActiva
-                        ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
-                        : 'bg-red-500/10 text-red-400 border border-red-500/20'
-                    }`}
-                  >
-                    <span className={`h-1.5 w-1.5 rounded-full ${terminalActiva ? 'bg-emerald-400' : 'bg-red-400'}`} />
-                    {terminalActiva ? 'Activa' : 'Inactiva'}
-                  </span>
-                </div>
-
-                {/* Control de encendido/apagado directo con switch */}
-                <div className="flex items-center justify-between gap-2 rounded-xl bg-ink-900/80 p-2.5 border border-line/50">
-                  <div className="flex flex-col">
-                    <span className="text-[10px] uppercase tracking-wider text-muted font-medium">Estado del Tótem</span>
-                    <span className={`text-xs font-bold ${terminalActiva ? 'text-emerald-400' : 'text-gray-300'}`}>
-                      {terminalActiva ? 'Encendida' : 'Apagada'}
-                    </span>
+              <div className="space-y-1 pl-4 animate-fade-in">
+                {/* Opción Terminal con switch */}
+                <div
+                  id="switch-terminal"
+                  role="button"
+                  tabIndex={0}
+                  onClick={handleToggleTerminal}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      handleToggleTerminal();
+                    }
+                  }}
+                  className="group flex w-full cursor-pointer items-center justify-between rounded-xl px-3 py-2 text-[15px] font-normal text-gray-200 transition-colors hover:bg-white/[0.06] hover:text-white"
+                  title={terminalActiva ? 'Apagar terminal' : 'Encender y abrir terminal automáticamente'}
+                >
+                  <div className="flex items-center gap-3">
+                    <MonitorCheck className="h-[18px] w-[18px] text-gray-300 group-hover:text-white" />
+                    <span>Terminal</span>
                   </div>
 
-                  <button
-                    type="button"
-                    id="switch-terminal"
-                    role="switch"
+                  {/* Switch toggle estilo Figma */}
+                  <div
                     aria-checked={terminalActiva}
-                    onClick={handleToggleTerminal}
-                    className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-1 focus:ring-offset-ink-900 ${
-                      terminalActiva ? 'bg-brand' : 'bg-ink-700'
+                    className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer items-center rounded-full transition-colors duration-200 ease-in-out ${
+                      terminalActiva ? 'bg-brand' : 'bg-ink-700 border border-white/10'
                     }`}
-                    title={terminalActiva ? 'Apagar terminal' : 'Encender terminal'}
                   >
-                    <span className="sr-only">Activar o desactivar terminal</span>
                     <span
-                      aria-hidden="true"
-                      className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-md ring-0 transition duration-200 ease-in-out ${
-                        terminalActiva ? 'translate-x-5' : 'translate-x-0'
+                      className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white shadow-md transition duration-200 ease-in-out ${
+                        terminalActiva ? 'translate-x-4' : 'translate-x-0.5'
                       }`}
                     />
-                  </button>
-                </div>
-
-                {/* Mensaje de advertencia si la terminal está apagada */}
-                {!terminalActiva && (
-                  <div
-                    role="alert"
-                    className="mt-2.5 flex items-start gap-2 rounded-lg border border-amber-500/25 bg-amber-500/10 p-2 text-[11px] leading-relaxed text-amber-300 animate-fade-in"
-                  >
-                    <AlertTriangle className="h-3.5 w-3.5 shrink-0 text-amber-400 mt-0.5" />
-                    <span>Terminal apagada. Activá el interruptor para habilitar ingresos con DNI.</span>
                   </div>
-                )}
-
-                {/* Botón directo para abrir la nueva pestaña */}
-                <a
-                  id="link-abrir-totem"
-                  href="/terminal"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-2.5 flex w-full items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-3 py-2 text-xs font-semibold text-gray-200 transition-all hover:border-brand/40 hover:bg-brand/10 hover:text-white"
-                >
-                  <ExternalLink className="h-3.5 w-3.5 text-brand" />
-                  <span>Abrir en nueva pestaña</span>
-                </a>
+                </div>
               </div>
             )}
           </div>
 
+          {/* Guía (con ícono Footprints exacto a la imagen) */}
           <button
             type="button"
-            id="btn-ayuda"
+            id="btn-guia"
             onClick={() => (hasPageTour ? startPageTour() : toast('No hay tutorial para esta pantalla'))}
             className={`${itemBase} ${itemIdle}`}
-            title="Tutorial guiado de esta sección"
+            title="Guía interactiva de esta sección"
           >
-            <CircleHelp className="h-[18px] w-[18px]" />
-            <span>Ayuda</span>
+            <Footprints className="h-[18px] w-[18px]" />
+            <span>Guía</span>
           </button>
 
+          {/* Cerrar Sesión en rojo idéntico a la imagen */}
           <button
             id="btn-cerrar-sesion"
+            type="button"
             onClick={handleLogout}
             disabled={loggingOut}
-            className={`${itemBase} text-[#F87171] hover:bg-red-500/5 hover:text-red-300 disabled:opacity-60`}
+            className={`${itemBase} text-[#F87171] hover:bg-red-500/10 hover:text-red-300 disabled:opacity-60`}
           >
-            <LogOut className="h-[18px] w-[18px]" />
+            <LogOut className="h-[18px] w-[18px] text-[#F87171]" />
             <span>{loggingOut ? 'Cerrando…' : 'Cerrar Sesión'}</span>
           </button>
         </div>

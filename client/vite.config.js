@@ -9,8 +9,17 @@ export default defineConfig({
     port: 5173,
     proxy: {
       '/api': {
-        target: process.env.VITE_PROXY_TARGET || 'http://localhost:4000',
+        target: process.env.VITE_PROXY_TARGET || 'http://127.0.0.1:4000',
         changeOrigin: true,
+        secure: false,
+        configure: (proxy) => {
+          proxy.on('error', (err, _req, res) => {
+            if (!res.headersSent && res.writeHead) {
+              res.writeHead(502, { 'Content-Type': 'application/json' });
+              res.end(JSON.stringify({ error: 'No se pudo conectar con el backend en el puerto 4000' }));
+            }
+          });
+        },
       },
     },
   },

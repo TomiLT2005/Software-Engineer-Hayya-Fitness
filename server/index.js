@@ -26,10 +26,12 @@ const acceso = require('./routes/acceso');
 
 const app = express();
 const PORT = Number(process.env.PORT) || 4000;
-const allowedOrigins = (process.env.CLIENT_URL || 'http://localhost:5173')
+const allowedOrigins = (process.env.CLIENT_URL || 'http://localhost:5173,http://127.0.0.1:5173')
   .split(',')
   .map((o) => o.trim())
   .filter(Boolean);
+if (!allowedOrigins.includes('http://127.0.0.1:5173')) allowedOrigins.push('http://127.0.0.1:5173');
+if (!allowedOrigins.includes('http://localhost:5173')) allowedOrigins.push('http://localhost:5173');
 
 if (process.env.TRUST_PROXY) app.set('trust proxy', 1);
 
@@ -99,8 +101,8 @@ app.use((err, req, res, next) => {
   return res.status(500).json({ error: 'Error interno del servidor' });
 });
 
-app.listen(PORT, async () => {
-  console.log(`\n🏋️  VortexManager API escuchando en http://localhost:${PORT}`);
+app.listen(PORT, '0.0.0.0', async () => {
+  console.log(`\n🏋️  VortexManager API escuchando en http://localhost:${PORT} y http://127.0.0.1:${PORT}`);
   try {
     await db.query('SELECT 1');
     console.log('✅ Conexión a PostgreSQL (Supabase) OK\n');

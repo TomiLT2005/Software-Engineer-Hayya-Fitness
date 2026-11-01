@@ -1,6 +1,14 @@
 {
   "rewrites": [
     {
+      "source": "/presentacion",
+      "destination": "/presentacion.html"
+    },
+    {
+      "source": "/presentacion-v2",
+      "destination": "/presentacion-v2.html"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
