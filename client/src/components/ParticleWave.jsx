@@ -39,7 +39,7 @@ export default function ParticleWave() {
       targetX: -9999,
       targetY: -9999,
       active: false,
-      radius: 175, // Radio de influencia del cursor
+      radius: 140, // Radio sutil de influencia del cursor
     };
 
     // Ondas expansivas por clics (efecto shockwave)
@@ -67,9 +67,9 @@ export default function ParticleWave() {
         x: e.clientX,
         y: e.clientY,
         r: 0,
-        maxR: Math.max(width, height) * 0.45,
-        speed: 7,
-        alpha: 1,
+        maxR: Math.max(width, height) * 0.4,
+        speed: 5.5,
+        alpha: 0.8,
       });
     };
 
@@ -94,25 +94,25 @@ export default function ParticleWave() {
     window.addEventListener('touchmove', handleTouchMove, { passive: true });
     window.addEventListener('touchend', handleTouchEnd);
 
-    // Parámetros de la grilla de partículas en 3D
-    const COLS = Math.min(68, Math.max(45, Math.floor(width / 24)));
-    const ROWS = 42;
-    const SPACING_X = Math.max(28, width / (COLS * 0.75));
-    const SPACING_Z = 32;
-    const FOV = 580; // Longitud focal de la cámara
+    // Parámetros de la grilla de partículas en 3D (mayor densidad y finura)
+    const COLS = Math.min(105, Math.max(72, Math.floor(width / 15)));
+    const ROWS = 54;
+    const SPACING_X = Math.max(16, width / (COLS * 0.82));
+    const SPACING_Z = 24;
+    const FOV = 540; // Longitud focal de la cámara
 
     let time = 0;
 
     const render = () => {
-      time += 0.018;
+      time += 0.014;
 
       // Suavizado del movimiento del mouse (lerp)
       if (mouse.active) {
-        mouse.x += (mouse.targetX - mouse.x) * 0.12;
-        mouse.y += (mouse.targetY - mouse.y) * 0.12;
+        mouse.x += (mouse.targetX - mouse.x) * 0.1;
+        mouse.y += (mouse.targetY - mouse.y) * 0.1;
       } else {
-        mouse.x += (-9999 - mouse.x) * 0.1;
-        mouse.y += (-9999 - mouse.y) * 0.1;
+        mouse.x += (-9999 - mouse.x) * 0.08;
+        mouse.y += (-9999 - mouse.y) * 0.08;
       }
 
       // Actualizar ondas de clics
@@ -125,36 +125,36 @@ export default function ParticleWave() {
         }
       }
 
-      // Fondo oscuro profundo con ligero viñeteado
-      ctx.fillStyle = '#090a0f';
+      // Fondo oscuro profundo
+      ctx.fillStyle = '#07080c';
       ctx.fillRect(0, 0, width, height);
 
-      // Centro de proyección de cámara (situado hacia la mitad inferior como en la referencia)
+      // Centro de proyección de cámara (mitad inferior)
       const centerX = width * 0.5;
-      const centerY = height * 0.62;
+      const centerY = height * 0.63;
 
       // Precalcular límites
       const halfCols = COLS / 2;
 
       for (let iz = ROWS - 1; iz >= 0; iz--) {
-        const z = iz * SPACING_Z + 120; // Profundidad Z de 120 a ~1500
+        const z = iz * SPACING_Z + 110; // Profundidad Z
         const scale = FOV / (FOV + z);
         const depthRatio = 1 - iz / ROWS; // 1 en primer plano, 0 en el fondo lejano
 
         for (let ix = 0; ix < COLS; ix++) {
           const x = (ix - halfCols) * SPACING_X;
 
-          // Ecuación de onda senoidal fluida de fondo (paisaje topográfico ondulante)
+          // Ecuación de onda senoidal más suave y sutil
           let y =
-            Math.sin(x * 0.003 + time * 1.1) * 36 +
-            Math.cos(z * 0.0042 + time * 0.85) * 44 +
-            Math.sin((x + z) * 0.002 + time * 1.3) * 22;
+            Math.sin(x * 0.0028 + time * 0.85) * 18 +
+            Math.cos(z * 0.0036 + time * 0.7) * 22 +
+            Math.sin((x + z) * 0.0018 + time * 0.95) * 10;
 
           // Posición proyectada básica en 2D
           let projX = centerX + x * scale;
-          let projY = centerY + (y + 110) * scale;
+          let projY = centerY + (y + 115) * scale;
 
-          // Interacción con el cursor del mouse (Efecto magnético / dispersión)
+          // Interacción sutil con el cursor del mouse
           let mouseFactor = 0;
           if (mouse.x > -500) {
             const dx = projX - mouse.x;
@@ -162,12 +162,11 @@ export default function ParticleWave() {
             const dist = Math.hypot(dx, dy);
 
             if (dist < mouse.radius) {
-              mouseFactor = Math.pow(1 - dist / mouse.radius, 1.6);
-              // Empuje radial hacia afuera
+              mouseFactor = Math.pow(1 - dist / mouse.radius, 1.8);
               const angle = Math.atan2(dy, dx);
-              const pushForce = mouseFactor * 48;
+              const pushForce = mouseFactor * 26; // Repulsión suave
               projX += Math.cos(angle) * pushForce;
-              projY += Math.sin(angle) * pushForce - mouseFactor * 22; // ligera elevación
+              projY += Math.sin(angle) * pushForce - mouseFactor * 12;
             }
           }
 
@@ -178,29 +177,29 @@ export default function ParticleWave() {
             const rdy = projY - rp.y;
             const rDist = Math.hypot(rdx, rdy);
             const waveDelta = Math.abs(rDist - rp.r);
-            if (waveDelta < 60) {
-              const wavePower = (1 - waveDelta / 60) * rp.alpha;
-              projY -= wavePower * 28;
-              mouseFactor = Math.max(mouseFactor, wavePower * 0.8);
+            if (waveDelta < 50) {
+              const wavePower = (1 - waveDelta / 50) * rp.alpha;
+              projY -= wavePower * 18;
+              mouseFactor = Math.max(mouseFactor, wavePower * 0.65);
             }
           }
 
-          // Tamaño del punto con escala de profundidad y dilatación por cursor
-          const baseDotSize = 1.35 + scale * 1.85;
-          const dotSize = Math.max(0.8, baseDotSize * (1 + mouseFactor * 1.5));
+          // Tamaño del punto más fino y delicado (no tan grande)
+          const baseDotSize = 0.65 + scale * 0.85;
+          const dotSize = Math.max(0.4, baseDotSize * (1 + mouseFactor * 0.7));
 
-          // Color y opacidad: los puntos cercanos al mouse brillan con tinte naranja cálido (#FF5500)
-          let alpha = Math.min(1, Math.max(0.08, depthRatio * 0.65 + mouseFactor * 0.6));
+          // Opacidad y brillo delicados
+          let alpha = Math.min(0.65, Math.max(0.03, depthRatio * 0.36 + mouseFactor * 0.4));
 
           if (mouseFactor > 0.15) {
-            // Partícula activa cerca del cursor -> resplandor naranja Hayya
-            const orangeIntensity = Math.min(1, mouseFactor * 1.3);
+            // Brillo naranja suave de Hayya
+            const orangeIntensity = Math.min(1, mouseFactor * 1.2);
             ctx.fillStyle = `rgba(${Math.round(232 + 23 * orangeIntensity)}, ${Math.round(
-              93 + 70 * (1 - orangeIntensity)
-            )}, ${Math.round(38 * (1 - orangeIntensity))}, ${alpha})`;
+              93 + 60 * (1 - orangeIntensity)
+            )}, ${Math.round(38 * (1 - orangeIntensity))}, ${Math.min(0.85, alpha + 0.15)})`;
           } else {
-            // Partícula ambiental normal -> blanco/gris perlado suave
-            const brightness = Math.round(180 + depthRatio * 75);
+            // Partícula ambiental perlada sutil
+            const brightness = Math.round(145 + depthRatio * 65);
             ctx.fillStyle = `rgba(${brightness}, ${brightness}, ${brightness + 10}, ${alpha})`;
           }
 

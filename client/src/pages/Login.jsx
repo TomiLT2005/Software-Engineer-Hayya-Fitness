@@ -7,7 +7,6 @@ import {
   EyeOff,
   Loader2,
   ArrowRight,
-  ShieldCheck,
   AlertCircle,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext.jsx';
@@ -23,7 +22,6 @@ export default function Login() {
   const [correo, setCorreo] = useState('');
   const [password, setPassword] = useState('');
   const [show, setShow] = useState(false);
-  const [rememberMe, setRememberMe] = useState(true);
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
@@ -83,8 +81,8 @@ export default function Login() {
               </span>
             </div>
 
-            <h1 className="mt-5 text-xl font-extrabold uppercase tracking-[0.14em] text-white sm:text-2xl">
-              ACCESO
+            <h1 className="mt-5 text-xl font-extrabold tracking-tight text-white sm:text-2xl">
+              Iniciar Sesión
             </h1>
             <p className="mt-1 text-xs text-gray-400">
               Ingresá con tu cuenta de administrador para continuar.
@@ -156,27 +154,12 @@ export default function Login() {
               </div>
             </div>
 
-            {/* Checkbox: Mantener la sesión iniciada (como en la referencia) */}
-            <div className="flex items-center justify-between pt-1">
-              <label className="group flex cursor-pointer select-none items-center gap-2.5 text-xs text-gray-400">
-                <input
-                  type="checkbox"
-                  checked={rememberMe}
-                  onChange={(e) => setRememberMe(e.target.checked)}
-                  className="h-4 w-4 cursor-pointer rounded border-white/20 bg-white/[0.04] text-brand transition-colors focus:ring-0 focus:ring-offset-0 accent-brand"
-                />
-                <span className="transition-colors group-hover:text-gray-300">
-                  Mantener la sesión iniciada
-                </span>
-              </label>
-            </div>
-
             {/* Botón de Ingreso */}
             <button
               id="btn-login"
               type="submit"
               disabled={submitting}
-              className="mt-2 flex w-full items-center justify-center gap-2 rounded-xl bg-brand py-3 text-sm font-bold uppercase tracking-wider text-white shadow-lg shadow-brand/25 transition-all duration-200 hover:bg-brand-600 hover:shadow-brand/40 active:translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60"
+              className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-brand py-3 text-sm font-bold uppercase tracking-wider text-white shadow-lg shadow-brand/25 transition-all duration-200 hover:bg-brand-600 hover:shadow-brand/40 active:translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60"
             >
               {submitting ? (
                 <>
@@ -192,16 +175,11 @@ export default function Login() {
             </button>
           </form>
 
-          {/* Ayuda y Pie de Seguridad */}
-          <div className="mt-6 flex flex-col items-center gap-2.5 border-t border-white/[0.06] pt-5 text-center">
+          {/* Ayuda */}
+          <div className="mt-6 border-t border-white/[0.06] pt-5 text-center">
             <p className="text-xs text-gray-400">
               ¿Sin acceso?{' '}
-              <span className="text-gray-300 font-medium">Pedíselo a un administrador.</span>
-            </p>
-
-            <p className="flex items-center gap-1.5 text-[11px] text-gray-400">
-              <ShieldCheck className="h-3.5 w-3.5 text-emerald-400" />
-              <span>Conexión protegida con cookie HTTP-Only</span>
+              <span className="font-medium text-gray-300">Pedíselo a un administrador.</span>
             </p>
           </div>
         </div>
