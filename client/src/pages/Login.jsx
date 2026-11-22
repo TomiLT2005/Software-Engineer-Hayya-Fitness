@@ -1,8 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import {
-  Mail,
-  Lock,
   Eye,
   EyeOff,
   Loader2,
@@ -22,8 +20,29 @@ export default function Login() {
   const [correo, setCorreo] = useState('');
   const [password, setPassword] = useState('');
   const [show, setShow] = useState(false);
+  const [rememberMe, setRememberMe] = useState(true);
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
+  const [currentTime, setCurrentTime] = useState('');
+
+  // Reloj en vivo en la esquina superior derecha (como en la referencia)
+  useEffect(() => {
+    const updateTime = () => {
+      const now = new Date();
+      setCurrentTime(
+        now.toLocaleTimeString('es-AR', {
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+          hour12: false,
+          timeZone: 'America/Argentina/Buenos_Aires',
+        })
+      );
+    };
+    updateTime();
+    const timer = setInterval(updateTime, 1000);
+    return () => clearInterval(timer);
+  }, []);
 
   if (!loading && user) return <Navigate to="/admin/inicio" replace />;
 
@@ -46,51 +65,55 @@ export default function Login() {
   };
 
   return (
-    <div className="relative flex min-h-screen w-full items-center justify-center overflow-hidden bg-[#07080c] px-4 py-12 selection:bg-brand/30">
-      {/* Fondo interactivo: matriz 3D de puntitos que reaccionan al mouse */}
+    <div className="relative flex min-h-screen w-full items-center justify-center overflow-hidden bg-[#050608] px-4 py-8 select-none">
+      {/* Fondo interactivo de puntitos ondulantes */}
       <ParticleWave />
 
-      {/* Gradiente sutil ambiental para dar profundidad */}
+      {/* Viñeta radial oscura para contraste óptimo */}
       <div
-        className="pointer-events-none fixed inset-0 z-[1] bg-[radial-gradient(ellipse_at_center,_transparent_40%,_rgba(7,8,12,0.85)_100%)]"
+        className="pointer-events-none fixed inset-0 z-[1] bg-[radial-gradient(ellipse_at_center,_transparent_30%,_rgba(5,6,8,0.85)_100%)]"
         aria-hidden="true"
       />
 
-      {/* Tarjeta central estética con efecto glassmorphism */}
-      <div className="relative z-10 w-full max-w-[420px] animate-scale-in">
-        {/* Resplandor superior cálido en el logo */}
-        <div
-          className="pointer-events-none absolute -top-16 left-1/2 h-36 w-64 -translate-x-1/2 rounded-full bg-brand/15 blur-[80px]"
-          aria-hidden="true"
-        />
+      {/* --- ELEMENTOS PERIFÉRICOS (IDÉNTICOS A LA IMAGEN DE REFERENCIA) --- */}
 
-        <div className="relative overflow-hidden rounded-3xl border border-white/[0.08] bg-[#0e1017]/85 p-7 shadow-2xl shadow-black/90 backdrop-blur-2xl sm:p-9">
-          {/* Borde superior con sutil halo luminoso */}
-          <div className="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-brand/40 to-transparent" />
+      {/* 1. Esquina Superior Izquierda: Logotipo */}
+      <div className="fixed left-6 top-6 z-20 flex items-center gap-2.5 sm:left-8 sm:top-8">
+        <Emblem className="h-7 w-7 text-white transition-opacity hover:opacity-80" title="Hayya Fitness Club" />
+      </div>
 
-          {/* Logo y Encabezado de Marca */}
-          <div className="flex flex-col items-center text-center">
-            <div className="relative mb-3 flex h-14 w-14 items-center justify-center rounded-2xl border border-brand/25 bg-brand/10 shadow-lg shadow-brand/15">
-              <Emblem className="h-8 w-8 text-brand" title="Hayya Fitness Club" />
-            </div>
+      {/* 2. Esquina Superior Derecha: Indicador de estado y Reloj en vivo */}
+      <div className="fixed right-6 top-6 z-20 flex items-center gap-2 font-mono text-[11px] tracking-widest text-gray-500 sm:right-8 sm:top-8">
+        <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+        <span>{currentTime || '00:00:00'}</span>
+      </div>
 
-            <div className="flex flex-col items-center leading-none">
-              <span className="text-xl font-extrabold tracking-tight text-white">Hayya</span>
-              <span className="mt-1 text-[8px] font-semibold tracking-[0.42em] text-gray-400">
-                FITNESS CLUB
-              </span>
-            </div>
+      {/* 3. Esquina Inferior Izquierda: Etiqueta de Acceso Restringido */}
+      <div className="fixed bottom-6 left-6 z-20 text-[10px] font-bold uppercase tracking-[0.25em] text-gray-600 sm:bottom-8 sm:left-8">
+        ACCESO RESTRINGIDO
+      </div>
 
-            <h1 className="mt-5 text-xl font-extrabold tracking-tight text-white sm:text-2xl">
-              Iniciar Sesión
+      {/* 4. Esquina Inferior Derecha: Dominio Oficial */}
+      <div className="fixed bottom-6 right-6 z-20 text-[10px] font-bold uppercase tracking-[0.25em] text-gray-600 sm:bottom-8 sm:right-8">
+        HAYYAFITNESS.COM
+      </div>
+
+      {/* --- TARJETA CENTRAL (ESTILO EXACTO A LA REFERENCIA) --- */}
+      <div className="relative z-10 w-full max-w-[400px] animate-scale-in">
+        <div className="relative overflow-hidden rounded-3xl border border-white/[0.08] bg-[#0c0d12]/90 p-7 shadow-2xl shadow-black/95 backdrop-blur-2xl sm:p-9">
+          
+          {/* Encabezado: ACCESO + Subtítulo */}
+          <div className="text-center">
+            <h1 className="text-2xl font-extrabold uppercase tracking-[0.18em] text-white">
+              ACCESO
             </h1>
-            <p className="mt-1 text-xs text-gray-400">
-              Ingresá con tu cuenta de administrador para continuar.
+            <p className="mt-1.5 text-xs text-gray-400">
+              Identificate para continuar.
             </p>
           </div>
 
           {/* Formulario */}
-          <form onSubmit={handleSubmit} noValidate className="mt-7 space-y-4">
+          <form onSubmit={handleSubmit} noValidate className="mt-8 space-y-4">
             {error && (
               <div
                 role="alert"
@@ -101,39 +124,35 @@ export default function Login() {
               </div>
             )}
 
-            {/* Campo: Correo Electrónico */}
+            {/* Campo: CORREO ELECTRÓNICO */}
             <div>
               <label
                 htmlFor="login-correo"
-                className="mb-1.5 block text-[11px] font-bold uppercase tracking-wider text-gray-400"
+                className="mb-1.5 block text-[10px] font-bold uppercase tracking-[0.14em] text-gray-400"
               >
-                Correo Electrónico
+                CORREO ELECTRÓNICO
               </label>
-              <div className="relative">
-                <Mail className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500" />
-                <input
-                  id="login-correo"
-                  type="email"
-                  autoComplete="username"
-                  placeholder="admin@hayya.com"
-                  value={correo}
-                  onChange={(e) => setCorreo(e.target.value)}
-                  className="w-full rounded-xl border border-white/10 bg-white/[0.03] py-2.5 pl-10 pr-3.5 text-sm text-white placeholder-gray-500 transition-all duration-150 focus:border-brand/70 focus:bg-white/[0.05] focus:outline-none focus:ring-2 focus:ring-brand/20"
-                  autoFocus
-                />
-              </div>
+              <input
+                id="login-correo"
+                type="email"
+                autoComplete="username"
+                placeholder="admin@hayya.com"
+                value={correo}
+                onChange={(e) => setCorreo(e.target.value)}
+                className="w-full rounded-xl border border-white/10 bg-[#12141c]/90 px-4 py-3 text-sm text-white placeholder-gray-600 transition-all duration-150 focus:border-white/30 focus:bg-[#151822] focus:outline-none focus:ring-1 focus:ring-white/20"
+                autoFocus
+              />
             </div>
 
-            {/* Campo: Contraseña */}
+            {/* Campo: CONTRASEÑA */}
             <div>
               <label
                 htmlFor="login-password"
-                className="mb-1.5 block text-[11px] font-bold uppercase tracking-wider text-gray-400"
+                className="mb-1.5 block text-[10px] font-bold uppercase tracking-[0.14em] text-gray-400"
               >
-                Contraseña
+                CONTRASEÑA
               </label>
               <div className="relative">
-                <Lock className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500" />
                 <input
                   id="login-password"
                   type={show ? 'text' : 'password'}
@@ -141,12 +160,12 @@ export default function Login() {
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full rounded-xl border border-white/10 bg-white/[0.03] py-2.5 pl-10 pr-11 text-sm text-white placeholder-gray-500 transition-all duration-150 focus:border-brand/70 focus:bg-white/[0.05] focus:outline-none focus:ring-2 focus:ring-brand/20"
+                  className="w-full rounded-xl border border-white/10 bg-[#12141c]/90 px-4 py-3 pr-11 text-sm text-white placeholder-gray-600 transition-all duration-150 focus:border-white/30 focus:bg-[#151822] focus:outline-none focus:ring-1 focus:ring-white/20"
                 />
                 <button
                   type="button"
                   onClick={() => setShow((s) => !s)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 transition-colors hover:text-white"
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-500 transition-colors hover:text-white"
                   aria-label={show ? 'Ocultar contraseña' : 'Mostrar contraseña'}
                 >
                   {show ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
@@ -154,32 +173,49 @@ export default function Login() {
               </div>
             </div>
 
-            {/* Botón de Ingreso */}
+            {/* Casilla: Mantener la sesión iniciada */}
+            <div className="pt-0.5">
+              <label className="group flex cursor-pointer select-none items-center gap-2.5 text-xs text-gray-400">
+                <input
+                  type="checkbox"
+                  checked={rememberMe}
+                  onChange={(e) => setRememberMe(e.target.checked)}
+                  className="h-4 w-4 cursor-pointer rounded border-white/20 bg-white/[0.04] text-white transition-colors focus:ring-0 focus:ring-offset-0 accent-white"
+                />
+                <span className="transition-colors group-hover:text-gray-300">
+                  Mantener la sesión iniciada
+                </span>
+              </label>
+            </div>
+
+            {/* Botón Pill: INGRESAR → */}
             <button
               id="btn-login"
               type="submit"
               disabled={submitting}
-              className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-brand py-3 text-sm font-bold uppercase tracking-wider text-white shadow-lg shadow-brand/25 transition-all duration-200 hover:bg-brand-600 hover:shadow-brand/40 active:translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60"
+              className="mt-3 flex w-full items-center justify-center gap-2 rounded-full bg-white py-3 text-sm font-black uppercase tracking-wider text-black shadow-lg shadow-white/5 transition-all duration-200 hover:bg-gray-200 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60"
             >
               {submitting ? (
                 <>
-                  <Loader2 className="h-4 w-4 animate-spin" />
+                  <Loader2 className="h-4 w-4 animate-spin text-black" />
                   <span>Ingresando…</span>
                 </>
               ) : (
                 <>
-                  <span>Ingresar</span>
+                  <span>INGRESAR</span>
                   <ArrowRight className="h-4 w-4 stroke-[2.5]" />
                 </>
               )}
             </button>
           </form>
 
-          {/* Ayuda */}
-          <div className="mt-6 border-t border-white/[0.06] pt-5 text-center">
-            <p className="text-xs text-gray-400">
+          {/* Enlace inferior de ayuda */}
+          <div className="mt-6 text-center">
+            <p className="text-xs text-gray-500">
               ¿Sin acceso?{' '}
-              <span className="font-medium text-gray-300">Pedíselo a un administrador.</span>
+              <span className="cursor-pointer text-gray-400 transition-colors hover:text-white">
+                Pedíselo a un administrador.
+              </span>
             </p>
           </div>
         </div>

@@ -125,13 +125,13 @@ export default function ParticleWave() {
         }
       }
 
-      // Fondo oscuro profundo
-      ctx.fillStyle = '#07080c';
+      // Fondo negro puro como en la referencia
+      ctx.fillStyle = '#050608';
       ctx.fillRect(0, 0, width, height);
 
-      // Centro de proyección de cámara (mitad inferior)
+      // Centro de proyección de cámara (horizonte ondulante a media altura)
       const centerX = width * 0.5;
-      const centerY = height * 0.63;
+      const centerY = height * 0.58;
 
       // Precalcular límites
       const halfCols = COLS / 2;
@@ -144,17 +144,17 @@ export default function ParticleWave() {
         for (let ix = 0; ix < COLS; ix++) {
           const x = (ix - halfCols) * SPACING_X;
 
-          // Ecuación de onda senoidal más suave y sutil
+          // Ecuación de onda horizontal con suaves crestas y valles como en la referencia
           let y =
-            Math.sin(x * 0.0028 + time * 0.85) * 18 +
-            Math.cos(z * 0.0036 + time * 0.7) * 22 +
-            Math.sin((x + z) * 0.0018 + time * 0.95) * 10;
+            Math.sin(x * 0.0026 + time * 0.75) * 19 +
+            Math.cos(z * 0.0034 + time * 0.6) * 23 +
+            Math.sin((x + z) * 0.0016 + time * 0.85) * 11;
 
           // Posición proyectada básica en 2D
           let projX = centerX + x * scale;
           let projY = centerY + (y + 115) * scale;
 
-          // Interacción sutil con el cursor del mouse
+          // Interacción reactiva con el cursor del mouse
           let mouseFactor = 0;
           if (mouse.x > -500) {
             const dx = projX - mouse.x;
@@ -164,9 +164,9 @@ export default function ParticleWave() {
             if (dist < mouse.radius) {
               mouseFactor = Math.pow(1 - dist / mouse.radius, 1.8);
               const angle = Math.atan2(dy, dx);
-              const pushForce = mouseFactor * 26; // Repulsión suave
+              const pushForce = mouseFactor * 28; // Repulsión magnética
               projX += Math.cos(angle) * pushForce;
-              projY += Math.sin(angle) * pushForce - mouseFactor * 12;
+              projY += Math.sin(angle) * pushForce - mouseFactor * 14;
             }
           }
 
@@ -177,30 +177,28 @@ export default function ParticleWave() {
             const rdy = projY - rp.y;
             const rDist = Math.hypot(rdx, rdy);
             const waveDelta = Math.abs(rDist - rp.r);
-            if (waveDelta < 50) {
-              const wavePower = (1 - waveDelta / 50) * rp.alpha;
-              projY -= wavePower * 18;
-              mouseFactor = Math.max(mouseFactor, wavePower * 0.65);
+            if (waveDelta < 55) {
+              const wavePower = (1 - waveDelta / 55) * rp.alpha;
+              projY -= wavePower * 20;
+              mouseFactor = Math.max(mouseFactor, wavePower * 0.7);
             }
           }
 
-          // Tamaño del punto más fino y delicado (no tan grande)
+          // Tamaño del punto fino y nítido
           const baseDotSize = 0.65 + scale * 0.85;
-          const dotSize = Math.max(0.4, baseDotSize * (1 + mouseFactor * 0.7));
+          const dotSize = Math.max(0.4, baseDotSize * (1 + mouseFactor * 0.8));
 
-          // Opacidad y brillo delicados
-          let alpha = Math.min(0.65, Math.max(0.03, depthRatio * 0.36 + mouseFactor * 0.4));
+          // Opacidad y brillo monocromático sutil como en la imagen
+          let alpha = Math.min(0.7, Math.max(0.03, depthRatio * 0.38 + mouseFactor * 0.45));
 
           if (mouseFactor > 0.15) {
-            // Brillo naranja suave de Hayya
-            const orangeIntensity = Math.min(1, mouseFactor * 1.2);
-            ctx.fillStyle = `rgba(${Math.round(232 + 23 * orangeIntensity)}, ${Math.round(
-              93 + 60 * (1 - orangeIntensity)
-            )}, ${Math.round(38 * (1 - orangeIntensity))}, ${Math.min(0.85, alpha + 0.15)})`;
+            // Partícula activa cerca del cursor -> blanco brillante
+            const bright = Math.min(255, Math.round(210 + mouseFactor * 45));
+            ctx.fillStyle = `rgba(${bright}, ${bright}, ${bright}, ${Math.min(0.95, alpha + 0.25)})`;
           } else {
-            // Partícula ambiental perlada sutil
-            const brightness = Math.round(145 + depthRatio * 65);
-            ctx.fillStyle = `rgba(${brightness}, ${brightness}, ${brightness + 10}, ${alpha})`;
+            // Partícula ambiental perlada
+            const brightness = Math.round(150 + depthRatio * 75);
+            ctx.fillStyle = `rgba(${brightness}, ${brightness}, ${brightness}, ${alpha})`;
           }
 
           // Dibujar el punto
