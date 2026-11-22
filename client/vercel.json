@@ -1,6 +1,10 @@
 {
   "rewrites": [
     {
+      "source": "/api/:path*",
+      "destination": "https://software-engineer-hayya-fitness.onrender.com/api/:path*"
+    },
+    {
       "source": "/presentacion",
       "destination": "/presentacion.html"
     },

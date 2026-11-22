@@ -28,10 +28,27 @@ const app = express();
 const PORT = Number(process.env.PORT) || 4000;
 const allowedOrigins = (process.env.CLIENT_URL || 'http://localhost:5173,http://127.0.0.1:5173')
   .split(',')
-  .map((o) => o.trim())
+  .map((o) => o.trim().replace(/\/+$/, ''))
   .filter(Boolean);
 if (!allowedOrigins.includes('http://127.0.0.1:5173')) allowedOrigins.push('http://127.0.0.1:5173');
 if (!allowedOrigins.includes('http://localhost:5173')) allowedOrigins.push('http://localhost:5173');
+
+// Permite cualquier deploy/preview de Vercel del proyecto + comodines en CLIENT_URL (ej. https://*.vercel.app)
+const VERCEL_PREVIEW_RE = /^https:\/\/software-engineer-hayya-fitness(?:-[a-z0-9-]+)?\.vercel\.app$/i;
+
+function isOriginAllowed(origin) {
+  if (!origin) return true;
+  const cleanOrigin = origin.replace(/\/+$/, '');
+  if (allowedOrigins.includes(cleanOrigin) || VERCEL_PREVIEW_RE.test(cleanOrigin)) return true;
+  return allowedOrigins.some((pattern) => {
+    if (!pattern.includes('*')) return false;
+    const regex = new RegExp(
+      '^' + pattern.replace(/[.+?^${}()|[\]\\]/g, '\\$&').replace(/\*/g, '.*') + '$',
+      'i'
+    );
+    return regex.test(cleanOrigin);
+  });
+}
 
 if (process.env.TRUST_PROXY) app.set('trust proxy', 1);
 
@@ -40,8 +57,8 @@ app.use(helmet());
 app.use(
   cors({
     origin(origin, cb) {
-      // Permite peticiones sin Origin (curl, mismo origen vía proxy de Vite)
-      if (!origin || allowedOrigins.includes(origin)) return cb(null, true);
+      // Permite peticiones sin Origin (curl, mismo origen vía proxy de Vite) y previews de Vercel
+      if (isOriginAllowed(origin)) return cb(null, true);
       return cb(new Error('Origen no permitido por CORS'));
     },
     credentials: true,
