@@ -1,6 +1,6 @@
 # VortexManager · Hayya Fitness Club 🏋️‍♂️
 
-Plataforma de gestión de gimnasios y control de acceso por DNI en tiempo real para **Hayya Fitness Club**.
+Sistema de gestión de gimnasios y control de acceso por DNI en tiempo real para **Hayya Fitness Club**.
 
 ---
 
