@@ -14,7 +14,7 @@ import {
 } from 'lucide-react';
 import Navbar from '../components/Navbar.jsx';
 import api, { getErrorMessage } from '../api/axios';
-import { formatDni, formatTime, timeAgo } from '../utils/format';
+import { formatDni, formatTime, timeAgo, formatPercent } from '../utils/format';
 
 const POLL_MS = 5000;
 
@@ -68,7 +68,8 @@ export default function DashboardInicio() {
     return () => clearInterval(id);
   }, [load]);
 
-  const tasa = resumen?.total ? Math.round((resumen.permitidos / resumen.total) * 100) : 0;
+  const tasaRaw = resumen?.total ? (resumen.permitidos / resumen.total) * 100 : 0;
+  const tasaTexto = formatPercent(tasaRaw, 1);
 
   const horas = useMemo(() => {
     const map = new Map((resumen?.porHora || []).map((h) => [h.hora, h]));
@@ -89,17 +90,7 @@ export default function DashboardInicio() {
 
   return (
     <>
-      <Navbar title="Inicio" subtitle="Resumen operativo del día y control de acceso en vivo">
-        <span className="hidden items-center gap-2 rounded-full border border-emerald-500/25 bg-emerald-500/5 px-3 py-1.5 text-[11px] font-bold tracking-wider text-emerald-400 md:inline-flex">
-          <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
-          TORNIQUETE #1 OPERATIVO
-        </span>
-      </Navbar>
-
-      <span className="mb-5 inline-flex items-center gap-2 rounded-full border border-emerald-500/25 bg-emerald-500/5 px-3 py-1.5 text-[11px] font-bold tracking-wider text-emerald-400 md:hidden">
-        <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
-        TORNIQUETE #1 OPERATIVO
-      </span>
+      <Navbar title="Inicio" subtitle="Resumen operativo del día y control de acceso en vivo" />
 
       {error && (
         <div className="mb-5 flex items-center gap-2.5 rounded-xl border border-red-500/25 bg-red-500/5 px-4 py-3 text-xs text-red-300">
@@ -110,7 +101,7 @@ export default function DashboardInicio() {
 
       <section data-tour="inicio-kpis" className="grid min-w-0 gap-3 sm:grid-cols-2 md:grid-cols-3">
         <KPI label="Total Ingresos" value={resumen?.total} icon={LogIn} tone="white" hint="Intentos registrados hoy" delay={0} />
-        <KPI label="Permitidos" value={resumen?.permitidos} icon={CheckCircle2} tone="green" hint={`${tasa}% de aprobación`} delay={60} />
+        <KPI label="Permitidos" value={resumen?.permitidos} icon={CheckCircle2} tone="green" hint={`${tasaTexto} de aprobación`} delay={60} />
         <div className="sm:col-span-2 md:col-span-1">
           <KPI label="Denegados" value={resumen?.denegados} icon={XCircle} tone="red" hint="Ficha, membresía o DNI" delay={120} />
         </div>
@@ -122,7 +113,7 @@ export default function DashboardInicio() {
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h2 className="text-base font-bold">Afluencia por hora</h2>
-              <p className="text-xs text-muted">Ingresos del día en el torniquete principal</p>
+              <p className="text-xs text-muted">Ingresos del día en el acceso principal</p>
             </div>
             <div className="flex items-center gap-4 text-[11px] text-muted">
               <span className="flex items-center gap-1.5">

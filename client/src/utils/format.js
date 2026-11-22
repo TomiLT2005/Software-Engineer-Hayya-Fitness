@@ -3,10 +3,31 @@ export const formatDni = (dni) => String(dni ?? '').replace(/\B(?=(\d{3})+(?!\d)
 
 export const onlyDigits = (v) => String(v ?? '').replace(/\D/g, '');
 
-/** 10000 -> "$10.000" */
+/** 10000 -> "$10.000,00" | 10500.5 -> "$10.500,50" */
 export const formatMoney = (amount) => {
-  const num = Math.round(Number(amount) || 0);
-  return `$${num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`;
+  const num = Number(amount) || 0;
+  return `$${num.toLocaleString('es-AR', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  })}`;
+};
+
+/** Formateo genérico de números con decimales (es-AR) */
+export const formatNumber = (val, decimals = 2) => {
+  const num = Number(val) || 0;
+  return num.toLocaleString('es-AR', {
+    minimumFractionDigits: decimals,
+    maximumFractionDigits: decimals,
+  });
+};
+
+/** Formateo de porcentajes (ej. 95.5 -> "95,5%") */
+export const formatPercent = (val, decimals = 1) => {
+  const num = Number(val) || 0;
+  return `${num.toLocaleString('es-AR', {
+    minimumFractionDigits: Number.isInteger(num) ? 0 : decimals,
+    maximumFractionDigits: decimals,
+  })}%`;
 };
 
 export const PLANES = ['Mensual', 'Quincenal', '1 Día', 'Mujeres', 'Kids', 'Infanto'];

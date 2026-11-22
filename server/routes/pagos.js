@@ -45,7 +45,7 @@ async function cotizar(client, socioId, planNombre, { lock = false } = {}) {
   if (!socio) return { error: { status: 404, message: 'Socio no encontrado' } };
 
   const planRes = await client.query(
-    `SELECT nombre, precio FROM planes WHERE nombre = $1 AND estado = 'Activo'`,
+    `SELECT nombre, precio::float AS precio FROM planes WHERE nombre = $1 AND estado = 'Activo'`,
     [planNombre]
   );
   const plan = planRes.rows[0];
@@ -198,7 +198,7 @@ router.get(
     if (!socioRes.rows[0]) return res.status(404).json({ error: 'Socio no encontrado' });
 
     const pagos = await db.query(
-      `SELECT id, plan_abonado, monto_base, recargo_mora, monto_total, metodo_pago, comprobante_ref, fecha_pago
+      `SELECT id, plan_abonado, monto_base::float AS monto_base, recargo_mora::float AS recargo_mora, monto_total::float AS monto_total, metodo_pago, comprobante_ref, fecha_pago
        FROM pagos
        WHERE socio_id = $1
        ORDER BY fecha_pago DESC`,
@@ -260,7 +260,7 @@ router.post(
       const ins = await client.query(
         `INSERT INTO pagos (socio_id, plan_abonado, monto_base, recargo_mora, monto_total, metodo_pago, comprobante_ref)
          VALUES ($1, $2, $3, $4, $5, $6, $7)
-         RETURNING id, plan_abonado, monto_base, recargo_mora, monto_total, metodo_pago, comprobante_ref, fecha_pago`,
+         RETURNING id, plan_abonado, monto_base::float AS monto_base, recargo_mora::float AS recargo_mora, monto_total::float AS monto_total, metodo_pago, comprobante_ref, fecha_pago`,
         [
           socioId,
           c.plan,

@@ -18,7 +18,9 @@ function validatePlanPayload(body = {}) {
   const nombre = String(body.nombre ?? '').trim();
   const descripcion = String(body.descripcion ?? '').trim();
   const precioRaw = body.precio;
-  const precio = Number(precioRaw);
+  const precio = typeof precioRaw === 'string'
+    ? Number(precioRaw.trim().replace(',', '.'))
+    : Number(precioRaw);
   const imagen_url = String(body.imagen_url ?? '').trim() || null;
   const estado = body.estado === 'Inactivo' ? 'Inactivo' : 'Activo';
 
@@ -48,12 +50,14 @@ function validatePlanPayload(body = {}) {
     errors.precio = 'El precio debe ser un número válido mayor o igual a 0';
   }
 
+  const precioFinal = Number.isNaN(precio) ? 0 : Math.round(precio * 100) / 100;
+
   return {
     errors,
     data: {
       nombre,
       descripcion: descripcion || null,
-      precio: Number.isNaN(precio) ? 0 : precio,
+      precio: precioFinal,
       beneficios,
       imagen_url,
       estado,

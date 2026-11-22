@@ -160,7 +160,8 @@ export default function ModalPlan({ open, plan, onClose, onSaved }) {
     if (!form.nombre.trim()) errs.nombre = 'El nombre del plan es obligatorio';
     if (form.nombre.trim().length > 100) errs.nombre = 'Máximo 100 caracteres';
 
-    const p = Number(form.precio);
+    const cleanedPrice = String(form.precio ?? '').trim().replace(',', '.');
+    const p = Number(cleanedPrice);
     if (form.precio === '' || form.precio === null || Number.isNaN(p) || p < 0) {
       errs.precio = 'Ingresá un precio válido (mayor o igual a 0)';
     }
@@ -224,11 +225,15 @@ export default function ModalPlan({ open, plan, onClose, onSaved }) {
 
     if (!validate()) return;
 
+    const cleanedPrice = String(form.precio ?? '').trim().replace(',', '.');
+    const p = Number(cleanedPrice);
+    const precioFinal = Math.round((Number.isNaN(p) ? 0 : p) * 100) / 100;
+
     setSaving(true);
     try {
       const payload = {
         nombre: form.nombre.trim(),
-        precio: Number(form.precio),
+        precio: precioFinal,
         descripcion: form.descripcion.trim() || null,
         imagen_url: form.imagen_url.trim() || null,
         beneficios: form.beneficios,
@@ -329,13 +334,13 @@ export default function ModalPlan({ open, plan, onClose, onSaved }) {
                 id="plan-precio"
                 type="number"
                 min="0"
-                step="100"
+                step="0.01"
                 value={form.precio}
                 onChange={(e) => {
                   setForm((f) => ({ ...f, precio: e.target.value }));
                   if (errors.precio) setErrors((e) => ({ ...e, precio: '' }));
                 }}
-                placeholder="10000"
+                placeholder="10000.00"
                 className={`input pl-9 ${errors.precio ? 'input-error' : ''}`}
               />
             </div>

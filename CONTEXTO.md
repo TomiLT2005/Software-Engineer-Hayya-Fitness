@@ -125,7 +125,7 @@ demo-hayya/
         │   ├── GestionPlanes.jsx      # Grilla de tarjetas de planes y filtros
         │   └── TotemAcceso.jsx        # Terminal kiosco de ingreso por DNI
         └── utils/
-            └── format.js              # Formateadores de DNI, moneda ARS ($10.000) y fechas (es-AR)
+            └── format.js              # Formateadores de DNI, moneda ARS ($10.000,00), porcentajes y fechas (es-AR)
 ```
 
 ---
