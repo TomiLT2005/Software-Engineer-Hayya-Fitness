@@ -1,17 +1,29 @@
 import { useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
-import { Mail, Lock, Eye, EyeOff, Loader2, ArrowRight, ShieldCheck, ScanLine, Users, AlertCircle } from 'lucide-react';
+import {
+  Mail,
+  Lock,
+  Eye,
+  EyeOff,
+  Loader2,
+  ArrowRight,
+  ShieldCheck,
+  AlertCircle,
+} from 'lucide-react';
 import { useAuth } from '../context/AuthContext.jsx';
 import { getErrorMessage } from '../api/axios';
-import { Emblem, Wordmark } from '../components/Logo.jsx';
+import { Emblem } from '../components/Logo.jsx';
+import ParticleWave from '../components/ParticleWave.jsx';
 
 export default function Login() {
   const { user, loading, login } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+
   const [correo, setCorreo] = useState('');
   const [password, setPassword] = useState('');
   const [show, setShow] = useState(false);
+  const [rememberMe, setRememberMe] = useState(true);
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
@@ -36,68 +48,68 @@ export default function Login() {
   };
 
   return (
-    <div className="relative flex min-h-screen overflow-hidden bg-ink-900">
-      {/* Panel de marca */}
-      <section className="relative hidden flex-1 flex-col justify-between overflow-hidden border-r border-line bg-ink-850 p-12 lg:flex">
-        <div className="bg-grid absolute inset-0 [mask-image:radial-gradient(ellipse_at_center,black,transparent_75%)]" />
-        <div className="absolute -left-40 top-1/3 h-[520px] w-[520px] rounded-full bg-brand/20 blur-[140px]" />
-        <Emblem className="absolute -bottom-24 -right-24 h-[560px] w-[560px] rotate-[-8deg] text-brand/[0.06]" />
+    <div className="relative flex min-h-screen w-full items-center justify-center overflow-hidden bg-[#07080c] px-4 py-12 selection:bg-brand/30">
+      {/* Fondo interactivo: matriz 3D de puntitos que reaccionan al mouse */}
+      <ParticleWave />
 
-        <div className="relative flex items-center gap-3">
-          <Emblem className="h-9 w-9 text-brand" />
-          <div className="leading-tight">
-            <p className="text-sm font-bold tracking-wide">VortexManager</p>
-            <p className="text-[11px] tracking-[0.3em] text-muted">HAYYA FITNESS CLUB</p>
+      {/* Gradiente sutil ambiental para dar profundidad */}
+      <div
+        className="pointer-events-none fixed inset-0 z-[1] bg-[radial-gradient(ellipse_at_center,_transparent_40%,_rgba(7,8,12,0.85)_100%)]"
+        aria-hidden="true"
+      />
+
+      {/* Tarjeta central estética con efecto glassmorphism */}
+      <div className="relative z-10 w-full max-w-[420px] animate-scale-in">
+        {/* Resplandor superior cálido en el logo */}
+        <div
+          className="pointer-events-none absolute -top-16 left-1/2 h-36 w-64 -translate-x-1/2 rounded-full bg-brand/15 blur-[80px]"
+          aria-hidden="true"
+        />
+
+        <div className="relative overflow-hidden rounded-3xl border border-white/[0.08] bg-[#0e1017]/85 p-7 shadow-2xl shadow-black/90 backdrop-blur-2xl sm:p-9">
+          {/* Borde superior con sutil halo luminoso */}
+          <div className="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-brand/40 to-transparent" />
+
+          {/* Logo y Encabezado de Marca */}
+          <div className="flex flex-col items-center text-center">
+            <div className="relative mb-3 flex h-14 w-14 items-center justify-center rounded-2xl border border-brand/25 bg-brand/10 shadow-lg shadow-brand/15">
+              <Emblem className="h-8 w-8 text-brand" title="Hayya Fitness Club" />
+            </div>
+
+            <div className="flex flex-col items-center leading-none">
+              <span className="text-xl font-extrabold tracking-tight text-white">Hayya</span>
+              <span className="mt-1 text-[8px] font-semibold tracking-[0.42em] text-gray-400">
+                FITNESS CLUB
+              </span>
+            </div>
+
+            <h1 className="mt-5 text-xl font-extrabold uppercase tracking-[0.14em] text-white sm:text-2xl">
+              ACCESO
+            </h1>
+            <p className="mt-1 text-xs text-gray-400">
+              Ingresá con tu cuenta de administrador para continuar.
+            </p>
           </div>
-        </div>
 
-        <div className="relative max-w-lg">
-          <h2 className="text-5xl font-extrabold leading-[1.05] tracking-tight">
-            Gestioná tu club con <span className="text-gradient-brand">energía Hayya.</span>
-          </h2>
-          <p className="mt-5 text-base text-muted">
-            Profe prueba hardcore
-          </p>
-          <div className="mt-10 grid grid-cols-3 gap-4">
-            {[
-              { icon: Users, t: 'Socios', d: 'Altas y fichas' },
-              { icon: ScanLine, t: 'Tótem DNI', d: 'Acceso al instante' },
-              { icon: ShieldCheck, t: 'Seguro', d: 'Sesión cifrada' },
-            ].map(({ icon: Icon, t, d }) => (
-              <div key={t} className="rounded-xl border border-white/10 bg-white/[0.02] p-4">
-                <span className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/10 bg-white/[0.04] text-gray-300">
-                  <Icon className="h-4 w-4" />
-                </span>
-                <p className="mt-3 text-sm font-semibold">{t}</p>
-                <p className="text-xs text-muted">{d}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <p className="relative text-xs text-gray-600">© {new Date().getFullYear()} Hayya Fitness Club · Todos los derechos reservados</p>
-      </section>
-
-      {/* Formulario */}
-      <section className="relative flex w-full items-center justify-center px-6 py-12 lg:w-[520px]">
-        <div className="absolute right-0 top-0 h-80 w-80 rounded-full bg-brand/5 blur-[160px] lg:hidden" />
-        <div className="relative w-full max-w-sm animate-slide-up">
-          <Wordmark className="mb-10" />
-
-          <h1 className="text-2xl font-bold">Iniciar sesión</h1>
-          <p className="mt-1 text-sm text-muted">Ingresá con tu cuenta de administrador.</p>
-
-          <form onSubmit={handleSubmit} noValidate className="mt-8 space-y-5">
+          {/* Formulario */}
+          <form onSubmit={handleSubmit} noValidate className="mt-7 space-y-4">
             {error && (
-              <div role="alert" className="flex items-center gap-2.5 rounded-xl border border-red-500/25 bg-red-500/5 px-4 py-3 text-xs text-red-300 animate-shake">
+              <div
+                role="alert"
+                className="flex items-center gap-2.5 rounded-xl border border-red-500/30 bg-red-500/10 px-3.5 py-2.5 text-xs text-red-300 animate-shake"
+              >
                 <AlertCircle className="h-4 w-4 shrink-0 text-red-400" />
                 <span>{error}</span>
               </div>
             )}
 
+            {/* Campo: Correo Electrónico */}
             <div>
-              <label htmlFor="login-correo" className="label">
-                Correo electrónico
+              <label
+                htmlFor="login-correo"
+                className="mb-1.5 block text-[11px] font-bold uppercase tracking-wider text-gray-400"
+              >
+                Correo Electrónico
               </label>
               <div className="relative">
                 <Mail className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500" />
@@ -108,14 +120,18 @@ export default function Login() {
                   placeholder="admin@hayya.com"
                   value={correo}
                   onChange={(e) => setCorreo(e.target.value)}
-                  className="input py-3 pl-10"
+                  className="w-full rounded-xl border border-white/10 bg-white/[0.03] py-2.5 pl-10 pr-3.5 text-sm text-white placeholder-gray-500 transition-all duration-150 focus:border-brand/70 focus:bg-white/[0.05] focus:outline-none focus:ring-2 focus:ring-brand/20"
                   autoFocus
                 />
               </div>
             </div>
 
+            {/* Campo: Contraseña */}
             <div>
-              <label htmlFor="login-password" className="label">
+              <label
+                htmlFor="login-password"
+                className="mb-1.5 block text-[11px] font-bold uppercase tracking-wider text-gray-400"
+              >
                 Contraseña
               </label>
               <div className="relative">
@@ -127,12 +143,12 @@ export default function Login() {
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="input py-3 pl-10 pr-11"
+                  className="w-full rounded-xl border border-white/10 bg-white/[0.03] py-2.5 pl-10 pr-11 text-sm text-white placeholder-gray-500 transition-all duration-150 focus:border-brand/70 focus:bg-white/[0.05] focus:outline-none focus:ring-2 focus:ring-brand/20"
                 />
                 <button
                   type="button"
                   onClick={() => setShow((s) => !s)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-white"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 transition-colors hover:text-white"
                   aria-label={show ? 'Ocultar contraseña' : 'Mostrar contraseña'}
                 >
                   {show ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
@@ -140,18 +156,56 @@ export default function Login() {
               </div>
             </div>
 
-            <button id="btn-login" type="submit" disabled={submitting} className="btn-primary w-full py-3 text-[15px]">
-              {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
-              {submitting ? 'Ingresando…' : 'Ingresar'}
-              {!submitting && <ArrowRight className="h-4 w-4" />}
+            {/* Checkbox: Mantener la sesión iniciada (como en la referencia) */}
+            <div className="flex items-center justify-between pt-1">
+              <label className="group flex cursor-pointer select-none items-center gap-2.5 text-xs text-gray-400">
+                <input
+                  type="checkbox"
+                  checked={rememberMe}
+                  onChange={(e) => setRememberMe(e.target.checked)}
+                  className="h-4 w-4 cursor-pointer rounded border-white/20 bg-white/[0.04] text-brand transition-colors focus:ring-0 focus:ring-offset-0 accent-brand"
+                />
+                <span className="transition-colors group-hover:text-gray-300">
+                  Mantener la sesión iniciada
+                </span>
+              </label>
+            </div>
+
+            {/* Botón de Ingreso */}
+            <button
+              id="btn-login"
+              type="submit"
+              disabled={submitting}
+              className="mt-2 flex w-full items-center justify-center gap-2 rounded-xl bg-brand py-3 text-sm font-bold uppercase tracking-wider text-white shadow-lg shadow-brand/25 transition-all duration-200 hover:bg-brand-600 hover:shadow-brand/40 active:translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {submitting ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  <span>Ingresando…</span>
+                </>
+              ) : (
+                <>
+                  <span>Ingresar</span>
+                  <ArrowRight className="h-4 w-4 stroke-[2.5]" />
+                </>
+              )}
             </button>
           </form>
 
-          <p className="mt-8 flex items-center justify-center gap-2 text-xs text-gray-600">
-            <ShieldCheck className="h-3.5 w-3.5" /> Conexión protegida con cookie HTTP-Only
-          </p>
+          {/* Ayuda y Pie de Seguridad */}
+          <div className="mt-6 flex flex-col items-center gap-2.5 border-t border-white/[0.06] pt-5 text-center">
+            <p className="text-xs text-gray-400">
+              ¿Sin acceso?{' '}
+              <span className="text-gray-300 font-medium">Pedíselo a un administrador.</span>
+            </p>
+
+            <p className="flex items-center gap-1.5 text-[11px] text-gray-400">
+              <ShieldCheck className="h-3.5 w-3.5 text-emerald-400" />
+              <span>Conexión protegida con cookie HTTP-Only</span>
+            </p>
+          </div>
         </div>
-      </section>
+      </div>
     </div>
   );
 }
