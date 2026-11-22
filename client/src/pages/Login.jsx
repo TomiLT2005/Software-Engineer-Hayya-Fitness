@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import {
   Eye,
@@ -20,29 +20,8 @@ export default function Login() {
   const [correo, setCorreo] = useState('');
   const [password, setPassword] = useState('');
   const [show, setShow] = useState(false);
-  const [rememberMe, setRememberMe] = useState(true);
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
-  const [currentTime, setCurrentTime] = useState('');
-
-  // Reloj en vivo en la esquina superior derecha (como en la referencia)
-  useEffect(() => {
-    const updateTime = () => {
-      const now = new Date();
-      setCurrentTime(
-        now.toLocaleTimeString('es-AR', {
-          hour: '2-digit',
-          minute: '2-digit',
-          second: '2-digit',
-          hour12: false,
-          timeZone: 'America/Argentina/Buenos_Aires',
-        })
-      );
-    };
-    updateTime();
-    const timer = setInterval(updateTime, 1000);
-    return () => clearInterval(timer);
-  }, []);
 
   if (!loading && user) return <Navigate to="/admin/inicio" replace />;
 
@@ -66,46 +45,38 @@ export default function Login() {
 
   return (
     <div className="relative flex min-h-screen w-full items-center justify-center overflow-hidden bg-[#050608] px-4 py-8 select-none">
-      {/* Fondo interactivo de puntitos ondulantes */}
+      {/* Fondo interactivo: matriz de puntitos desde la mitad de la pantalla hacia abajo con hover naranja */}
       <ParticleWave />
 
-      {/* Viñeta radial oscura para contraste óptimo */}
+      {/* Viñeta radial oscura */}
       <div
         className="pointer-events-none fixed inset-0 z-[1] bg-[radial-gradient(ellipse_at_center,_transparent_30%,_rgba(5,6,8,0.85)_100%)]"
         aria-hidden="true"
       />
-
-      {/* --- ELEMENTOS PERIFÉRICOS (IDÉNTICOS A LA IMAGEN DE REFERENCIA) --- */}
 
       {/* 1. Esquina Superior Izquierda: Logotipo */}
       <div className="fixed left-6 top-6 z-20 flex items-center gap-2.5 sm:left-8 sm:top-8">
         <Emblem className="h-7 w-7 text-white transition-opacity hover:opacity-80" title="Hayya Fitness Club" />
       </div>
 
-      {/* 2. Esquina Superior Derecha: Indicador de estado y Reloj en vivo */}
-      <div className="fixed right-6 top-6 z-20 flex items-center gap-2 font-mono text-[11px] tracking-widest text-gray-500 sm:right-8 sm:top-8">
-        <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-        <span>{currentTime || '00:00:00'}</span>
-      </div>
-
-      {/* 3. Esquina Inferior Izquierda: Etiqueta de Acceso Restringido */}
+      {/* 2. Esquina Inferior Izquierda: Etiqueta de Acceso Restringido */}
       <div className="fixed bottom-6 left-6 z-20 text-[10px] font-bold uppercase tracking-[0.25em] text-gray-600 sm:bottom-8 sm:left-8">
         ACCESO RESTRINGIDO
       </div>
 
-      {/* 4. Esquina Inferior Derecha: Dominio Oficial */}
+      {/* 3. Esquina Inferior Derecha: Dominio Oficial */}
       <div className="fixed bottom-6 right-6 z-20 text-[10px] font-bold uppercase tracking-[0.25em] text-gray-600 sm:bottom-8 sm:right-8">
         HAYYAFITNESS.COM
       </div>
 
-      {/* --- TARJETA CENTRAL (ESTILO EXACTO A LA REFERENCIA) --- */}
+      {/* --- TARJETA CENTRAL --- */}
       <div className="relative z-10 w-full max-w-[400px] animate-scale-in">
         <div className="relative overflow-hidden rounded-3xl border border-white/[0.08] bg-[#0c0d12]/90 p-7 shadow-2xl shadow-black/95 backdrop-blur-2xl sm:p-9">
           
-          {/* Encabezado: ACCESO + Subtítulo */}
+          {/* Encabezado: Inicio Sesión + Subtítulo */}
           <div className="text-center">
-            <h1 className="text-2xl font-extrabold uppercase tracking-[0.18em] text-white">
-              ACCESO
+            <h1 className="text-2xl font-extrabold tracking-tight text-white">
+              Inicio Sesión
             </h1>
             <p className="mt-1.5 text-xs text-gray-400">
               Identificate para continuar.
@@ -173,27 +144,12 @@ export default function Login() {
               </div>
             </div>
 
-            {/* Casilla: Mantener la sesión iniciada */}
-            <div className="pt-0.5">
-              <label className="group flex cursor-pointer select-none items-center gap-2.5 text-xs text-gray-400">
-                <input
-                  type="checkbox"
-                  checked={rememberMe}
-                  onChange={(e) => setRememberMe(e.target.checked)}
-                  className="h-4 w-4 cursor-pointer rounded border-white/20 bg-white/[0.04] text-white transition-colors focus:ring-0 focus:ring-offset-0 accent-white"
-                />
-                <span className="transition-colors group-hover:text-gray-300">
-                  Mantener la sesión iniciada
-                </span>
-              </label>
-            </div>
-
             {/* Botón Pill: INGRESAR → */}
             <button
               id="btn-login"
               type="submit"
               disabled={submitting}
-              className="mt-3 flex w-full items-center justify-center gap-2 rounded-full bg-white py-3 text-sm font-black uppercase tracking-wider text-black shadow-lg shadow-white/5 transition-all duration-200 hover:bg-gray-200 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60"
+              className="mt-4 flex w-full items-center justify-center gap-2 rounded-full bg-white py-3 text-sm font-black uppercase tracking-wider text-black shadow-lg shadow-white/5 transition-all duration-200 hover:bg-gray-200 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60"
             >
               {submitting ? (
                 <>
