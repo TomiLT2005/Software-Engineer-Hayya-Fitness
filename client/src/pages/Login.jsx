@@ -54,9 +54,12 @@ export default function Login() {
         aria-hidden="true"
       />
 
-      {/* 1. Esquina Superior Izquierda: Logotipo */}
-      <div className="fixed left-6 top-6 z-20 flex items-center gap-2.5 sm:left-8 sm:top-8">
-        <Emblem className="h-7 w-7 text-white transition-opacity hover:opacity-80" title="Hayya Fitness Club" />
+      {/* 1. Esquina Superior Izquierda: Logotipo con mayor presencia visual */}
+      <div className="fixed left-6 top-6 z-20 flex items-center sm:left-8 sm:top-8">
+        <Emblem
+          className="h-10 w-10 sm:h-11 sm:w-11 text-white drop-shadow-[0_2px_14px_rgba(255,255,255,0.12)] transition-all duration-200 hover:scale-105 hover:opacity-95"
+          title="Hayya Fitness Club"
+        />
       </div>
 
       {/* 2. Esquina Inferior Izquierda: Etiqueta de Acceso Restringido */}
@@ -71,20 +74,41 @@ export default function Login() {
 
       {/* --- TARJETA CENTRAL --- */}
       <div className="relative z-10 w-full max-w-[400px] animate-scale-in">
-        <div className="relative overflow-hidden rounded-3xl border border-white/[0.08] bg-[#0c0d12]/90 p-7 shadow-2xl shadow-black/95 backdrop-blur-2xl sm:p-9">
-          
-          {/* Encabezado: Inicio Sesión + Subtítulo */}
+        {/* Resplandor ambiental naranja muy sutil y tenue en la parte posterior */}
+        <div
+          className="pointer-events-none absolute -inset-1 rounded-[32px] bg-gradient-to-b from-[#F15A24]/15 via-transparent to-transparent opacity-60 blur-xl"
+          aria-hidden="true"
+        />
+
+        <div className="relative overflow-hidden rounded-3xl border border-white/[0.08] bg-[#0c0d12]/90 px-7 py-9 shadow-2xl shadow-black/95 backdrop-blur-2xl sm:px-9 sm:py-12">
+          {/* Acento en borde superior: micro-gradiente naranja muy tenue (#F15A24) */}
+          <div
+            className="pointer-events-none absolute inset-x-0 top-0 h-[1.5px] bg-gradient-to-r from-transparent via-[#F15A24]/40 to-transparent"
+            aria-hidden="true"
+          />
+
+          {/* Brillos de esquina sutiles con tonalidad naranja de marca */}
+          <div
+            className="pointer-events-none absolute -right-16 -top-16 h-36 w-36 rounded-full bg-[#F15A24]/[0.07] blur-3xl"
+            aria-hidden="true"
+          />
+          <div
+            className="pointer-events-none absolute -bottom-16 -left-16 h-36 w-36 rounded-full bg-[#F15A24]/[0.03] blur-3xl"
+            aria-hidden="true"
+          />
+
+          {/* Encabezado: Iniciar sesión + Subtítulo */}
           <div className="text-center">
-            <h1 className="text-2xl font-extrabold tracking-tight text-white">
-              Inicio Sesión
+            <h1 className="text-3xl font-extrabold tracking-tight text-white sm:text-[32px]">
+              Iniciar sesión
             </h1>
-            <p className="mt-1.5 text-xs text-gray-400">
+            <p className="mt-2.5 text-xs text-gray-400 sm:text-[13px]">
               Identificate para continuar.
             </p>
           </div>
 
           {/* Formulario */}
-          <form onSubmit={handleSubmit} noValidate className="mt-8 space-y-4">
+          <form onSubmit={handleSubmit} noValidate className="mt-9 space-y-5 sm:mt-10 sm:space-y-6">
             {error && (
               <div
                 role="alert"
@@ -99,7 +123,7 @@ export default function Login() {
             <div>
               <label
                 htmlFor="login-correo"
-                className="mb-1.5 block text-[10px] font-bold uppercase tracking-[0.14em] text-gray-400"
+                className="mb-2 block text-[10px] font-bold uppercase tracking-[0.14em] text-gray-400"
               >
                 CORREO ELECTRÓNICO
               </label>
@@ -119,7 +143,7 @@ export default function Login() {
             <div>
               <label
                 htmlFor="login-password"
-                className="mb-1.5 block text-[10px] font-bold uppercase tracking-[0.14em] text-gray-400"
+                className="mb-2 block text-[10px] font-bold uppercase tracking-[0.14em] text-gray-400"
               >
                 CONTRASEÑA
               </label>
@@ -144,16 +168,16 @@ export default function Login() {
               </div>
             </div>
 
-            {/* Botón Pill: INGRESAR → */}
+            {/* Botón Pill: INGRESAR → con transición y hover naranja sutil de marca */}
             <button
               id="btn-login"
               type="submit"
               disabled={submitting}
-              className="mt-4 flex w-full items-center justify-center gap-2 rounded-full bg-white py-3 text-sm font-black uppercase tracking-wider text-black shadow-lg shadow-white/5 transition-all duration-200 hover:bg-gray-200 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60"
+              className="mt-7 flex w-full items-center justify-center gap-2 rounded-full bg-white py-3.5 text-sm font-black uppercase tracking-wider text-black shadow-lg shadow-black/20 transition-all duration-300 ease-out hover:bg-[#F15A24] hover:text-white hover:shadow-[0_4px_22px_rgba(241,90,36,0.30)] active:scale-[0.98] active:bg-[#d84815] active:text-white disabled:cursor-not-allowed disabled:opacity-60 sm:mt-8"
             >
               {submitting ? (
                 <>
-                  <Loader2 className="h-4 w-4 animate-spin text-black" />
+                  <Loader2 className="h-4 w-4 animate-spin text-current" />
                   <span>Ingresando…</span>
                 </>
               ) : (
@@ -166,7 +190,7 @@ export default function Login() {
           </form>
 
           {/* Enlace inferior de ayuda */}
-          <div className="mt-6 text-center">
+          <div className="mt-8 text-center sm:mt-9">
             <p className="text-xs text-gray-500">
               ¿Sin acceso?{' '}
               <span className="cursor-pointer text-gray-400 transition-colors hover:text-white">
